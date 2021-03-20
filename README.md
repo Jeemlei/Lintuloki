@@ -31,6 +31,8 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 ## Alustava tietokantakaavio
 
+Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja maakunnat.
+
 ![observationdb.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/observationdb.png)
 ![banded_enum.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/banded_enum.png)
 
