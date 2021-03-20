@@ -31,8 +31,8 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 ## Alustava tietokantakaavio
 
-![banded_enum.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/banded_enum.png)
 ![observationdb.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/observationdb.png)
+![banded_enum.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/banded_enum.png)
 
 ## Lisäominaisuudet ajan salliessa
 
