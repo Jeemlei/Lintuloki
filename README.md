@@ -38,7 +38,7 @@ Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja
 
 ## Lisäominaisuudet ajan salliessa
 
-- Käyttäjät pystyvät ehdottamaan uusia lajeja ja sijaintejä, jotka ylläpitäjä tarkastaa ja hyväksyy
+- Käyttäjät pystyvät ehdottamaan uusia lajeja ja sijaintejä, jotka ylläpitäjä tarkastaa ja hyväksyy tai hylkää
 - Havaintoihin voi lisätä tarvittaessa rengastetun linnun renkaan numeron
 - Yksittäisen linnun havaintoja voi hakea rengasnumeron perusteella
 - Muita lisätietokenttiä havaintoihin
