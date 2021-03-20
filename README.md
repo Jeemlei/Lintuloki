@@ -22,7 +22,7 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 - Uusien havaintojen luominen
 - Omien havaintojen muokkaaminen ja poistaminen
-- Kuvan lisääminen oman havainnon yhteyteen
+- Kuvan/kuvien lisääminen oman havainnon yhteyteen
 - Minkä tahansa havainnon kommentointi
 
 ### Ylläpitäjä
