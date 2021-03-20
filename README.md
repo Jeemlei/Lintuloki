@@ -33,3 +33,10 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 ![banded_enum.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/banded_enum.png)
 ![observationdb.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/observationdb.png)
+
+## Lisäominaisuudet ajan salliessa
+
+- Käyttäjät pystyvät ehdottamaan uusia lajeja ja sijaintejä, jotka ylläpitäjä tarkastaa ja hyväksyy
+- Havaintoihin voi lisätä tarvittaessa rengastetun linnun renkaan numeron
+- Yksittäisen linnun havaintoja voi hakea rengasnumeron perusteella
+- Muita lisätietokenttiä havaintoihin
