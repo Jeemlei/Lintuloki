@@ -1,0 +1,51 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center">
+	<div class="card" style="width: 18rem">
+		<div class="card-body">
+			<form method="post" action="/register">
+				<div class="row">
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							name="name"
+							id="name"
+							placeholder="Nimi"
+						/>
+						<label for="name">Nimi</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							name="username"
+							id="username"
+							placeholder="Käyttäjänimi"
+							required
+						/>
+						<label for="username">Käyttäjänimi</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							type="password"
+							name="password"
+							id="password"
+							placeholder="Salasana"
+							required
+						/>
+						<label for="password">Salasana</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-primary" type="submit">Rekisteröidy</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

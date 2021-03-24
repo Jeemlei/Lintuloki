@@ -1,0 +1,38 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center align-items-sm-center">
+	<div class="card" style="width: 18rem">
+		<div class="card-body">
+			<form method="post" action="/login">
+				<div class="row">
+					<div class="col">
+						<input
+							class="login-input form-control"
+							name="username"
+							id="username"
+							placeholder="Käyttäjänimi"
+							required
+						/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<input
+							class="login-input form-control"
+							type="password"
+							name="password"
+							id="password"
+							placeholder="Salasana"
+							required
+						/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-primary" type="submit">Kirjaudu</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

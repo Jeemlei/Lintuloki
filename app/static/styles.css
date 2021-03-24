@@ -1,0 +1,24 @@
+body {
+    padding-bottom: 80px;
+    background-color:#eee;
+}
+
+form {
+    padding: 5px;
+}
+
+label {
+    margin-left: 10px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.login-input {
+    margin-bottom: 10px;
+}

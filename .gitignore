@@ -1,0 +1,12 @@
+#Pyvenv ubuntu
+__pycache__
+venv
+
+#Pyvenv windows
+Include
+Lib
+Scripts
+pyvenv.cfg
+
+#Environment variables for development
+.env
