@@ -25,8 +25,14 @@
                                 Käyttäjä
                             </a>
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+								{% if session.username %}
+								<p style="margin-left: 1rem;margin-right: 1rem;">Olet kirjautunut käyttäjänimellä <b>{{ session.username }}</b></p>
+								<div class="dropdown-divider"></div>
+								<li class="nav-item"><a style="margin-left: 10px;" class="nav-link" href="/logout">Kirjaudu ulos</a></li>
+								{% else %}
 								<li class="nav-item"><a style="margin-left: 10px;" class="nav-link" href="/register">Rekisteröidy</a></li>
 								<li class="nav-item"><a style="margin-left: 10px;" class="nav-link" href="/login">Kirjaudu</a></li>
+								{% endif %}
 							</ul>
 						</li>
                     </ul>
@@ -39,18 +45,18 @@
         </div>
 
         <footer class="bg-light text-lg-start">
-            <div class="container text-center">
+            <div style="margin-bottom: 1rem;" class="container text-center">
                 <div class="row justify-content-md-center">
                     <p>
                         Lintubongarin lokisovellus on tietokantasovellusprojekti, joka on toteutettu osana tietojenkäsittelytieteen opintoja Helsingin yliopistolla.
                     </p>
                 </div>
-                <div class="row justify-content-md-center">
+                <div style="margin-top: -10px;" class="row justify-content-md-center">
                     <div class="col">
-                        
+                        <a href="https://hy-tsoha.github.io/materiaali/"><button type="button" class="btn btn-outline-dark">Kurssisivu</button></a>
                     </div>
                     <div class="col">
-                        
+                        <a href="https://github.com/Jeemlei/Lintuloki"><button type="button" class="btn btn-outline-dark">Sovelluksen koodi</button></a>
                     </div>
                 </div>
             </div>
