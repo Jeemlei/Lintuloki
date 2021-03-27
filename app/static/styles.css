@@ -1,28 +1,36 @@
 body {
-    padding-bottom: 80px;
-    background-color:#eee;
+	padding-bottom: 80px;
+	background-color: #eee;
 }
 
 form {
-    padding: 5px;
+	padding: 5px;
 }
 
 label {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding-top: 10px;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding-top: 10px;
 }
 
-.login-input {
-    margin-bottom: 10px;
+.plain-input {
+	margin-bottom: 10px;
 }
 
 h1 {
-    color: #000034;
+	color: #000034;
+}
+
+a  {
+	color: #198754;
+}
+
+a:hover {
+    color: #16804e;
 }

@@ -2,6 +2,7 @@ from os import getenv
 from flask import Flask, render_template, redirect, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
@@ -44,9 +45,9 @@ def login():
 
         if user:
             session['username'] = username
-            return redirect('/')
+            return redirect('/new-observation')
         else:
-            redirect('/login')
+            return redirect('/login')
 
     return render_template('login.html')
 
@@ -54,3 +55,28 @@ def login():
 def logout():
     del session['username']
     return redirect('/')
+
+@app.route('/new-observation', methods=['GET', 'POST'])
+def new_observation():
+    if request.method == 'POST':
+        return redirect('/')
+
+    result = db.session.execute('SELECT fi FROM birds')
+    birdpattern = ''
+    birds = []
+    for b in result.fetchall():
+        birdpattern += f'{b[0]}|'
+        birds.append(b[0])
+    birdpattern = birdpattern[:-1]
+
+    result = db.session.execute('SELECT muni FROM locations')
+    locationpattern = ''
+    locations = []
+    for l in result.fetchall():
+        locationpattern += f'{l[0]}|'
+        locations.append(l[0])
+    locationpattern = locationpattern[:-1]
+
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    return render_template('new_observation.html', birdpattern=birdpattern, birds=birds, locationpattern=locationpattern, locations=locations, today=today)

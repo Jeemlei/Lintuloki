@@ -14,8 +14,8 @@ CREATE TABLE Locations (
 
 CREATE TABLE Birds (
     id SERIAL PRIMARY KEY,
-    sci TEXT,
-    fi TEXT,
+    sci TEXT UNIQUE NOT NULL,
+    fi TEXT NOT NULL,
     sv TEXT,
     en TEXT
 );
@@ -28,18 +28,20 @@ CREATE TABLE Observations (
     location_id INTEGER REFERENCES Locations (id),
     bird_id INTEGER REFERENCES Birds (id),
     bird_count INTEGER,
+    observation_date DATE,
     banded banded_status,
     band_serial TEXT
 );
 
-CREATE TABLE comments (
+CREATE TABLE Comments (
     id SERIAL PRIMARY KEY,
     observation_id INTEGER REFERENCES Observations (id),
     user_id INTEGER REFERENCES Users (id),
-    content TEXT
+    content TEXT,
+    posting_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE images (
+CREATE TABLE Images (
     id SERIAL PRIMARY KEY,
     observation_id INTEGER REFERENCES Observations (id),
     user_id INTEGER REFERENCES Users (id),

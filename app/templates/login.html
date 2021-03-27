@@ -6,7 +6,7 @@
 				<div class="row">
 					<div class="col">
 						<input
-							class="login-input form-control"
+							class="plain-input form-control"
 							name="username"
 							id="username"
 							placeholder="Käyttäjänimi"
@@ -17,7 +17,7 @@
 				<div class="row">
 					<div class="col">
 						<input
-							class="login-input form-control"
+							class="plain-input form-control"
 							type="password"
 							name="password"
 							id="password"
@@ -28,11 +28,14 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<button class="btn btn-primary" type="submit">Kirjaudu</button>
+						<button class="btn btn-success" type="submit">Kirjaudu</button>
 					</div>
 				</div>
 			</form>
 		</div>
+		<ul class="list-group list-group-flush">
+			<li style="margin-left: 5px;" class="list-group-item"><a href="/register" class="card-link">Luo uusi käyttäjä</a></li>
+		</ul>
 	</div>
 </div>
 {% endblock %}

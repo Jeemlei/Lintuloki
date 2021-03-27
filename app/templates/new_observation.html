@@ -1,0 +1,246 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center align-items-sm-center">
+	<div class="card" style="width: 25rem">
+		<div class="card-header">
+			<h4 style="margin: 0px">Uusi havainto</h4>
+		</div>
+		<div class="card-body">
+			<form method="post" action="/new-observation">
+				<div class="row">
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							name="bird"
+							id="bird"
+							placeholder="Lintu"
+							list="birds"
+							pattern="{{ birdpattern }}"
+							title="Valitsemaasi lintua ei ole listassa"
+							required
+						/>
+						<label for="bird">Lintu</label>
+						<datalist id="birds">
+							{% for bird in birds %}
+							<option value="{{ bird }}"></option>
+							{% endfor %}
+						</datalist>
+					</div>
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							name="location"
+							id="location"
+							placeholder="Kunta"
+							list="locations"
+							pattern="{{ locationpattern }}"
+							title="Valitsemaasi kuntaa ei ole listassa"
+							required
+						/>
+						<label for="location">Kunta</label>
+						<datalist id="locations">
+							{% for location in locations %}
+							<option value="{{ location }}"></option>
+							{% endfor %}
+						</datalist>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<div class="input-group mb-3">
+							<span class="input-group-text" id="date-label">
+								Havaintopäivä:
+							</span>
+							<input
+								style="width: 10rem"
+								class="form-control"
+								type="date"
+								id="date"
+								name="date"
+								value="{{ today }}"
+								min="2021-01-01"
+								max="{{ today }}"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<h6>Lintujen lukumäärä:</h6>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="count-options"
+								id="one"
+								onclick="setCountOne()"
+								checked
+							/>
+							<label
+								style="margin-left: 0px"
+								class="form-check-label"
+								for="one"
+							>
+								Yksi (1)
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="count-options"
+								id="many"
+								onclick="setCountMany()"
+							/>
+							<label
+								style="margin-left: 0px"
+								class="form-check-label"
+								for="many"
+							>
+								Useampi
+							</label>
+							<div style="width: 9rem" class="input-group mb-3">
+								<span class="input-group-text" id="count-label">Lkm:</span>
+								<input class="form-control" type="number" id="count" disabled />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<h6>Rengastettu:</h6>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div class="form-check form-check-inline">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="banded-options"
+								id="true"
+								value="true"
+								onclick="setBandActive()"
+							/>
+							<label
+								style="margin-left: 0px"
+								class="form-check-label"
+								for="true"
+							>
+								Kyllä
+							</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="banded-options"
+								id="false"
+								value="false"
+								onclick="setBandDisabled()"
+							/>
+							<label
+								style="margin-left: 0px"
+								class="form-check-label"
+								for="false"
+							>
+								Ei
+							</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="banded-options"
+								id="not_known"
+								value="not_known"
+								onclick="setBandDisabled()"
+								checked
+							/>
+							<label
+								style="margin-left: 0px"
+								class="form-check-label"
+								for="not_known"
+							>
+								Ei tietoa
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<p style="margin-bottom: 0px">
+							Renkaan kirjainkoodi ja sarjanumero:
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<input
+							class="plain-input form-control"
+							type="text"
+							id="bandserial"
+							disabled
+						/>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-success" type="submit">Lähetä</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	function setInputStatus(inputId, active) {
+		document.getElementById(inputId).disabled = !active
+	}
+
+	function resetInputValue(inputId) {
+		document.getElementById(inputId).value = ''
+	}
+
+	function setCountOne() {
+		setInputStatus('count', false)
+		resetInputValue('count')
+		setInputStatus('true', true)
+		setInputStatus('false', true)
+		setInputStatus('not_known', true)
+	}
+
+	function setCountMany() {
+		setInputStatus('count', true)
+		setInputStatus('true', false)
+		setInputStatus('false', false)
+		setInputStatus('not_known', false)
+		document.getElementById('not_known').checked = true
+		setBandDisabled()
+	}
+
+	function setBandActive() {
+		setInputStatus('bandserial', true)
+		document.getElementById('bandserial').required = true
+	}
+
+	function setBandDisabled() {
+		setInputStatus('bandserial', false)
+		resetInputValue('bandserial')
+		document.getElementById('bandserial').required = false
+	}
+</script>
+{% endblock %}

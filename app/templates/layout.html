@@ -18,6 +18,15 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/">Etusivu</a>
 						</li>
+						{% if session.username %}
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/new-observation">Uusi havainto</a>
+						</li>
+						{% else %}
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/login">Uusi havainto</a>
+						</li>
+						{% endif %}
 					</ul>
 					<ul class="navbar-nav justify-content-end">
 						<li class="nav-item dropdown">
@@ -51,7 +60,7 @@
                         Lintubongarin lokisovellus on tietokantasovellusprojekti, joka on toteutettu osana tietojenkäsittelytieteen opintoja Helsingin yliopistolla.
                     </p>
                 </div>
-                <div style="margin-top: -10px;" class="row justify-content-md-center">
+                <div style="margin-top: -10px;margin-bottom: -5px;" class="row justify-content-md-center">
                     <div class="col">
                         <a href="https://hy-tsoha.github.io/materiaali/"><button type="button" class="btn btn-outline-dark">Kurssisivu</button></a>
                     </div>
