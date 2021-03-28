@@ -2,12 +2,18 @@ from os import getenv
 from flask import Flask, render_template, redirect, request, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import datetime
+from werkzeug.utils import secure_filename
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv('SQLALCHEMY_DATABASE_URI')
 db = SQLAlchemy(app)
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=15)
 
 @app.route('/')
 def index():
