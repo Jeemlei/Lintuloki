@@ -1,6 +1,11 @@
 body {
-	padding-bottom: 80px;
+	padding-bottom: 140px;
 	background-color: #eee;
+}
+
+hr {
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 
 form {

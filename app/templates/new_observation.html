@@ -5,7 +5,17 @@
 			<h4 style="margin: 0px">Uusi havainto</h4>
 		</div>
 		<div class="card-body">
-			<form method="post" action="/new-observation">
+			<!--Form will return the following:
+				bird 			: text
+				location 		: text
+				date 			: date
+				count-option 	: text 			("one"/"many")
+				count 			: number/empty
+				banded-option 	: text 			("true"/"false"/"not_known")
+				band-serial 		: text/empty
+				uploadImage 	: file/empty 	(.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
+			-->
+			<form method="post" enctype="multipart/form-data" action="/new-observation">
 				<div class="row">
 					<div class="col form-floating mb-3">
 						<input
@@ -65,9 +75,11 @@
 					</div>
 				</div>
 
+				<hr />
+
 				<div class="row">
 					<div class="col">
-						<h6>Lintujen lukumäärä:</h6>
+						<h5>Lintujen lukumäärä:</h5>
 					</div>
 				</div>
 				<div class="row">
@@ -76,8 +88,9 @@
 							<input
 								class="form-check-input"
 								type="radio"
-								name="count-options"
+								name="count-option"
 								id="one"
+								value="one"
 								onclick="setCountOne()"
 								checked
 							/>
@@ -97,8 +110,9 @@
 							<input
 								class="form-check-input"
 								type="radio"
-								name="count-options"
+								name="count-option"
 								id="many"
+								value="many"
 								onclick="setCountMany()"
 							/>
 							<label
@@ -110,15 +124,24 @@
 							</label>
 							<div style="width: 9rem" class="input-group mb-3">
 								<span class="input-group-text" id="count-label">Lkm:</span>
-								<input class="form-control" type="number" id="count" disabled />
+								<input
+									class="form-control"
+									type="number"
+									min="2"
+									name="count"
+									id="count"
+									disabled
+								/>
 							</div>
 						</div>
 					</div>
 				</div>
 
+				<hr />
+
 				<div class="row">
 					<div class="col">
-						<h6>Rengastettu:</h6>
+						<h5>Rengastettu:</h5>
 					</div>
 				</div>
 				<div class="row">
@@ -127,7 +150,7 @@
 							<input
 								class="form-check-input"
 								type="radio"
-								name="banded-options"
+								name="banded-option"
 								id="true"
 								value="true"
 								onclick="setBandActive()"
@@ -144,7 +167,7 @@
 							<input
 								class="form-check-input"
 								type="radio"
-								name="banded-options"
+								name="banded-option"
 								id="false"
 								value="false"
 								onclick="setBandDisabled()"
@@ -161,7 +184,7 @@
 							<input
 								class="form-check-input"
 								type="radio"
-								name="banded-options"
+								name="banded-option"
 								id="not_known"
 								value="not_known"
 								onclick="setBandDisabled()"
@@ -177,26 +200,38 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="row">
-					<div class="col">
-						<p style="margin-bottom: 0px">
-							Renkaan kirjainkoodi ja sarjanumero:
-						</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col">
+					<div class="col form-floating mb-3">
 						<input
+							style="margin-bottom: 0px"
 							class="plain-input form-control"
 							type="text"
-							id="bandserial"
+							name="band-serial"
+							id="band-serial"
 							disabled
+						/>
+						<label for="band-serial">Renkaan kirjainkoodi ja sarjanumero:</label>
+					</div>
+				</div>
+
+				<hr />
+
+				<div style="margin-bottom: 16px" class="row">
+					<div class="col">
+						<label class="form-label" for="uploadImage">
+							Kuva havainnosta (<i>ei pakollinen</i>)
+						</label>
+						<input
+							type="file"
+							class="form-control"
+							name="uploadImage"
+							id="uploadImage"
+							accept=".apng,.avif,.gif,.jpg,.jpeg,.jfif,.pjpeg,.pjp,.png,.svg,.webp"
 						/>
 					</div>
 				</div>
 
-				<div class="row">
+				<div style="margin-bottom: -4px" class="row">
 					<div class="col">
 						<button class="btn btn-success" type="submit">Lähetä</button>
 					</div>
@@ -207,40 +242,46 @@
 </div>
 
 <script>
-	function setInputStatus(inputId, active) {
+	function setInputActive(inputId, active) {
 		document.getElementById(inputId).disabled = !active
 	}
 
+	function setInputRequired(inputId, required) {
+		document.getElementById(inputId).required = required
+	}
+
 	function resetInputValue(inputId) {
-		document.getElementById(inputId).value = ''
+		document.getElementById(inputId).value = null
 	}
 
 	function setCountOne() {
-		setInputStatus('count', false)
+		setInputActive('count', false)
+		setInputRequired('count', false)
 		resetInputValue('count')
-		setInputStatus('true', true)
-		setInputStatus('false', true)
-		setInputStatus('not_known', true)
+		setInputActive('true', true)
+		setInputActive('false', true)
+		setInputActive('not_known', true)
 	}
 
 	function setCountMany() {
-		setInputStatus('count', true)
-		setInputStatus('true', false)
-		setInputStatus('false', false)
-		setInputStatus('not_known', false)
+		setInputActive('count', true)
+		setInputRequired('count', true)
+		setInputActive('true', false)
+		setInputActive('false', false)
+		setInputActive('not_known', false)
 		document.getElementById('not_known').checked = true
 		setBandDisabled()
 	}
 
 	function setBandActive() {
-		setInputStatus('bandserial', true)
-		document.getElementById('bandserial').required = true
+		setInputActive('band-serial', true)
+		setInputRequired('band-serial', true)
 	}
 
 	function setBandDisabled() {
-		setInputStatus('bandserial', false)
-		resetInputValue('bandserial')
-		document.getElementById('bandserial').required = false
+		setInputActive('band-serial', false)
+		resetInputValue('band-serial')
+		setInputRequired('band-serial', false)
 	}
 </script>
 {% endblock %}

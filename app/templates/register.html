@@ -2,6 +2,11 @@
 <div class="d-flex justify-content-center">
 	<div class="card" style="width: 18rem">
 		<div class="card-body">
+			<!--Form will return the following:
+				name		: text
+				username	: text
+				password	: text
+			-->
 			<form method="post" action="/register">
 				<div class="row">
 					<div class="col form-floating mb-3">
@@ -10,6 +15,7 @@
 							name="name"
 							id="name"
 							placeholder="Nimi"
+							maxlength="16"
 						/>
 						<label for="name">Nimi</label>
 					</div>
@@ -21,6 +27,7 @@
 							name="username"
 							id="username"
 							placeholder="Käyttäjänimi"
+							maxlength="16"
 							required
 						/>
 						<label for="username">Käyttäjänimi</label>
@@ -34,6 +41,7 @@
 							name="password"
 							id="password"
 							placeholder="Salasana"
+							minlength="8"
 							required
 						/>
 						<label for="password">Salasana</label>
