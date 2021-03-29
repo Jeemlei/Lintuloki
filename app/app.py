@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv('SQLALCHEMY_DATABASE_URI')
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv('DATABASE_URL')
 db = SQLAlchemy(app)
 
 @app.before_request

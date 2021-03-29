@@ -28,35 +28,35 @@ CREATE TABLE Birds (
     id SERIAL PRIMARY KEY,
     sci TEXT UNIQUE NOT NULL,
     fi TEXT UNIQUE NOT NULL,
-    sv TEXT,
-    en TEXT
+    sv TEXT UNIQUE,
+    en TEXT UNIQUE
 );
 
 CREATE TYPE banded_status AS ENUM ('true', 'false', 'not_known');
 
 CREATE TABLE Observations (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES Users (id),
-    location_id INTEGER REFERENCES Locations (id),
-    bird_id INTEGER REFERENCES Birds (id),
+    user_id INTEGER NOT NULL REFERENCES Users (id),
+    location_id INTEGER NOT NULL REFERENCES Locations (id),
+    bird_id INTEGER NOT NULL REFERENCES Birds (id),
     bird_count INTEGER NOT NULL,
     observation_date DATE NOT NULL,
-    banded banded_status NOT NULL,
+    banded banded_status NOT NULL DEFAULT 'not_known',
     band_serial TEXT
 );
 
 CREATE TABLE Comments (
     id SERIAL PRIMARY KEY,
-    observation_id INTEGER REFERENCES Observations (id),
-    user_id INTEGER REFERENCES Users (id),
+    observation_id INTEGER NOT NULL REFERENCES Observations (id),
+    user_id INTEGER NOT NULL REFERENCES Users (id),
     content TEXT NOT NULL,
     posting_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP(0)
 );
 
 CREATE TABLE Images (
     id SERIAL PRIMARY KEY,
-    observation_id INTEGER REFERENCES Observations (id),
-    user_id INTEGER REFERENCES Users (id),
+    observation_id INTEGER NOT NULL REFERENCES Observations (id),
+    user_id INTEGER NOT NULL REFERENCES Users (id),
     imagename TEXT NOT NULL,
     binarydata BYTEA NOT NULL
 );
