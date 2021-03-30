@@ -11,7 +11,7 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 
 ## Demo Herokussa
 
-[Lintuloki](https://lintuloki.herokuapp.com/)
+Linkki herokuun: [Lintuloki](https://lintuloki.herokuapp.com/)
 
 Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraavat [vaatimusmäärittelyssä](/documentation/requirements.md) kirjatut ominaisuudet:
 - Uuden käyttäjän rekisteröiminen
