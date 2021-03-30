@@ -13,6 +13,7 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 - Sovellukseen voi rekisteröidä käyttäjän sekä kirjautua sisään ja ulos
 - Havaintoja voi hakea ja tarkastella kirjautumatta sisään
   - Hakutoiminnossa voi rajata havainnot lajin, sijainnin ja/tai ajan mukaan
+  - Yksittäisen linnun havaintoja voi hakea rengasnumeron perusteella
 
 ### Normaali käyttäjä
 
@@ -40,6 +41,4 @@ Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja
 ## Lisäominaisuudet ajan salliessa
 
 - Käyttäjät pystyvät ehdottamaan uusia lajeja ja sijaintejä, jotka ylläpitäjä tarkastaa ja hyväksyy tai hylkää
-- Havaintoihin voi lisätä tarvittaessa rengastetun linnun renkaan numeron
-- Yksittäisen linnun havaintoja voi hakea rengasnumeron perusteella
 - Muita lisätietokenttiä havaintoihin
