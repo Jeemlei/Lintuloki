@@ -7,38 +7,17 @@ _Repositorio sisältää [tietokantasovellus](https://hy-tsoha.github.io/materia
 ## Sovelluksen tarkoitus
 
 Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintojen tarkasteluun ja kommentointiin.
+- [Vaatimusmäärittely](/documentation/requirements.md)
 
-## Käyttäjät
+## Demo Herokussa
 
-Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ ja _ylläpitäjä_.
+[Lintuloki](https://lintuloki.herokuapp.com/)
 
-## Keskeiset toiminnot
-
-- Sovellukseen voi rekisteröidä käyttäjän sekä kirjautua sisään.
-- Havaintoja voi hakea ja tarkastella kirjautumatta sisään.
-  - Hakutoiminnossa voi rajata havainnot lajin, sijainnin ja/tai ajan mukaan
-
-### Normaali käyttäjä
-
+Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraavat [vaatimusmäärittelyssä](/documentation/requirements.md) kirjatut ominaisuudet:
+- Uuden käyttäjän rekisteröiminen
+- Sisään kirjautuminen
+- Ulos kirjautuminen
 - Uusien havaintojen luominen
-- Omien havaintojen muokkaaminen ja poistaminen
-- Kuvan/kuvien lisääminen oman havainnon yhteyteen
-- Minkä tahansa havainnon kommentointi
+- Kuvan lisääminen havainnon yhteyteen
 
-### Ylläpitäjä
-
-- Pystyy poistamaan kommentteja, havaintoja sekä käyttäjättunnuksia.
-
-## Alustava tietokantakaavio
-
-Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja maakunnat.
-
-![observationdb.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/observationdb.png)
-![banded_enum.png](https://github.com/Jeemlei/tsoha-projekti/blob/main/banded_enum.png)
-
-## Lisäominaisuudet ajan salliessa
-
-- Käyttäjät pystyvät ehdottamaan uusia lajeja ja sijaintejä, jotka ylläpitäjä tarkastaa ja hyväksyy tai hylkää
-- Havaintoihin voi lisätä tarvittaessa rengastetun linnun renkaan numeron
-- Yksittäisen linnun havaintoja voi hakea rengasnumeron perusteella
-- Muita lisätietokenttiä havaintoihin
+Kaikki toiminnot ovat kohtuullisen yksiselitteisiä ja niihin pääsee käsiksi navigointipalkin linkeistä.

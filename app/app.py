@@ -86,7 +86,7 @@ def new_observation():
 		# location 		: string
 		# date 			: string        (yyyy-mm-dd)
 		# count-option  : string 		('one'/'many')
-		# count 		: int/None
+		# count 		: string/None
 		# banded-option : string 		('true'/'false'/'not_known')
 		# band-serial 	: string/None
 		# uploadImage 	: file/None 	(.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
@@ -127,12 +127,11 @@ def new_observation():
             return redirect('/new-observation')
 
         # ----- VALIDATE AND SAVE IMAGE -----
-        print(observation_id)
         try:
             image = request.files['uploadImage']
             imagename = image.filename
             allowedFiles = ('.apng','.avif','.gif','.jpg','.jpeg','.jfif','.pjpeg','.pjp','.png','.svg','.webp')
-            if imagename.lower().endswith(allowedFiles):
+            if observation_id and imagename.lower().endswith(allowedFiles):
                 imagedata = image.read()
                 sql = 'INSERT INTO images (observation_id, user_id, imagename, binarydata) VALUES (:observation_id, :user_id, :imagename, :data)'
                 db.session.execute(sql, {'observation_id':observation_id, 'user_id':session['user_id'], 'imagename':secure_filename(imagename), 'data':imagedata})
