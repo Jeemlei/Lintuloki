@@ -35,7 +35,7 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja maakunnat.
 
-![dbdiagram.png](/db/dbdiagram.png)
+![dbdiagram.png](db/dbdiagram.png)
 
 ## Lisäominaisuudet ajan salliessa
 
