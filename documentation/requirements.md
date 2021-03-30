@@ -31,7 +31,7 @@ Sovelluksella on kaksi käyttäjäroolia, jotka ovat ns. _normaali käyttäjä_ 
 
 - Pystyy poistamaan kommentteja, havaintoja sekä käyttäjättunnuksia.
 
-## Alustava tietokantakaavio
+## Tietokantakaavio
 
 Käyttöön otettaessa tietokanta tulee sisältämään Suomen linnut, kunnat ja maakunnat.
 
