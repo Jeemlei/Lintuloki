@@ -10,3 +10,6 @@ pyvenv.cfg
 
 #Environment variables for development
 .env
+
+#Heroku
+Procfile
