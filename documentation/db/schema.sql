@@ -1,8 +1,9 @@
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(16) UNIQUE NOT NULL,
     realname VARCHAR(16),
-    psswrdhash TEXT NOT NULL
+    username VARCHAR(16) UNIQUE NOT NULL,
+    psswrdhash TEXT NOT NULL,
+    admin_status BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE Locations (
