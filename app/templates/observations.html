@@ -9,7 +9,7 @@
             <p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
             <p><b>Bongari:</b> {{ observation.user }}</p>
             {% if observation.imgid %}
-                <img style="width: 20rem;" src="/images/{{ observation.imgid }}">
+                <a href="/images/{{ observation.imgid }}"><img style="width: 23rem;" src="/images/{{ observation.imgid }}"></a>
             {% endif %}
         </div>
     </div>
