@@ -19,13 +19,16 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/">Etusivu</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/observations">Havainnot</a>
+						</li>
 						{% if session.username %}
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="/new-observation">Uusi havainto</a>
+							<a class="nav-link active" aria-current="page" href="/new-observation">Luo uusi</a>
 						</li>
 						{% else %}
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="/login">Uusi havainto</a>
+							<a class="nav-link active" aria-current="page" href="/login">Luo uusi</a>
 						</li>
 						{% endif %}
 					</ul>

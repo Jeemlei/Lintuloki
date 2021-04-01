@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block content %}
+{% for observation in observations %}
+<div class="d-flex justify-content-center align-items-sm-center">
+	<div class="card" style="width: 25rem;margin-bottom: 10px;">
+		<div class="card-header">
+			<h5 style="margin: 0px">{{ observation.birdfi }}</h5> <i>{{ observation.birdsci }}</i>
+		</div>
+		<div class="card-body">
+            <p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
+            <p><b>Bongari:</b> {{ observation.user }}</p>
+            {% if observation.imgid >= 0 %}
+                <img style="width: 20rem;" src="/images/{{ observation.imgid }}">
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
