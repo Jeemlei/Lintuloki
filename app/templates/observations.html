@@ -6,6 +6,7 @@
 			<h5 style="margin: 0px">{{ observation.birdfi }}</h5> <i>{{ observation.birdsci }}</i>
 		</div>
 		<div class="card-body">
+            <p><b>Havaintopäivä:</b> {{ observation.date }}</p>
             <p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
             <p><b>Bongari:</b> {{ observation.user }}</p>
             {% if observation.imgid %}

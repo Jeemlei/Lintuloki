@@ -193,7 +193,7 @@ def new_observation():
             print('Exception:', e)
             traceback.print_exc()
 
-        return redirect('/')
+        return redirect('/observations')
 
     # ----- GET /new-observation -----
     result = db.session.execute('SELECT fi FROM birds ORDER BY fi')
@@ -219,15 +219,16 @@ def new_observation():
 
 @app.route('/observations')
 def observations():
-    sql = 'SELECT u.realname, b.fi, b.sci, o.bird_count, i.id AS img_id \
+    sql = 'SELECT u.realname, b.fi, b.sci, o.bird_count, i.id AS img_id, o.observation_date AS date, o.id \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN birds b ON o.bird_id=b.id \
-            LEFT JOIN images i ON o.id=i.observation_id'
+            LEFT JOIN images i ON o.id=i.observation_id \
+            ORDER BY date DESC'
     result = db.session.execute(sql).fetchall()
     observations = []
     for o in result:
-        observations.append({'user': o[0], 'birdfi': o[1], 'birdsci': o[2], 'count': o[3], 'imgid': o[4]})
+        observations.append({'user': o[0], 'birdfi': o[1], 'birdsci': o[2], 'count': o[3], 'imgid': o[4], 'date': o[5].strftime('%-d.%-m.%Y')})
     print(observations)
     return render_template('observations.html', title='Lintuloki - Havainnot', observations=observations)
 
