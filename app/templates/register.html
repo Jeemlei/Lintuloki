@@ -3,9 +3,10 @@
 	<div class="card" style="width: 18rem">
 		<div class="card-body">
 			<!--Form will return the following:
-				name		: text
-				username	: text
-				password	: text
+				name				: text
+				username			: text
+				password			: text
+				password_confirm	: text
 			-->
 			<form method="post" action="/register">
 				<div class="row">
@@ -46,6 +47,29 @@
 							required
 						/>
 						<label for="password">Salasana</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col form-floating mb-3">
+						<input
+							class="form-control"
+							name="password_confirm"
+							required="required"
+							type="password"
+							id="password_confirm"
+							placeholder="Vahvista salasana"
+							oninput="check(this)"
+						/>
+						<label for="password_confirm">Vahvista salasana</label>
+						<script language="javascript" type="text/javascript">
+							function check(input) {
+								if (input.value != document.getElementById('password').value) {
+									input.setCustomValidity('Vahvistus ei vastaa salasanaa!')
+								} else {
+									input.setCustomValidity('')
+								}
+							}
+						</script>
 					</div>
 				</div>
 				<div class="row">

@@ -49,11 +49,15 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if authorized_user(False):
+        return redirect('/')
+
     if request.method == 'POST':
         # -- REQUEST VALUES --
-        # name      : string
-        # username  : string
-        # password  : string
+        # name              : string
+        # username          : string
+        # password          : string
+        # password_confirm  : string
         password = request.form['password']
         if len(password) < 8:
             return redirect('/register')
