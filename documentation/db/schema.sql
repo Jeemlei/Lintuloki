@@ -1,6 +1,6 @@
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
-    realname VARCHAR(16),
+    realname VARCHAR(32),
     username VARCHAR(16) UNIQUE NOT NULL,
     psswrdhash TEXT NOT NULL,
     admin_status BOOLEAN NOT NULL DEFAULT false

@@ -1,19 +1,64 @@
-{% extends "layout.html" %} {% block content %}
+{% extends "layout.html" %}
+{% block content %}
+<div style="margin-bottom: 10px;" class="d-flex justify-content-center align-items-sm-center">
+	{% if pageinfo.previouspage %}
+	<a class="btn btn-success" href="{{ pageinfo.previouspage }}"><</a>
+	{% else %}
+	<button class="btn btn-success" disabled><</button>
+	{% endif %}
+
+	<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+
+	{% if pageinfo.nextpage %}
+	<a class="btn btn-success" href="{{ pageinfo.nextpage }}">></a>
+	{% else %}
+	<button class="btn btn-success" disabled>></button>
+	{% endif %}
+</div>
 {% for observation in observations %}
 <div class="d-flex justify-content-center align-items-sm-center">
-	<div class="card" style="width: 25rem;margin-bottom: 10px;">
+	<div class="card" style="width: 25rem; margin-bottom: 10px">
 		<div class="card-header">
-			<h5 style="margin: 0px">{{ observation.birdfi }}</h5> <i>{{ observation.birdsci }}</i>
+			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
+			<i>{{ observation.birdsci }}</i>
 		</div>
 		<div class="card-body">
-            <p><b>Havaintopäivä:</b> {{ observation.date }}</p>
-            <p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
-            <p><b>Bongari:</b> {{ observation.user }}</p>
-            {% if observation.imgid %}
-                <a href="/images/{{ observation.imgid }}"><img style="width: 23rem;" src="/images/{{ observation.imgid }}"></a>
-            {% endif %}
-        </div>
-    </div>
+			<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
+			<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
+			<p><b>Bongari:</b> {{ observation.user }}</p>
+			{% if observation.imgid %}
+			<a href="/images/{{ observation.imgid }}"
+				><img style="width: 23rem" src="/images/{{ observation.imgid }}"
+			/></a>
+			{% endif %}
+		</div>
+	</div>
 </div>
 {% endfor %}
+
+{% if lastpage %}
+<div class="d-flex justify-content-center align-items-sm-center">
+	<div class="card" style="width: 25rem; margin-bottom: 10px">
+		<div class="card-header">
+			<h5 style="margin: 0px">Ei enempää havaintoja</h5>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+<div class="d-flex justify-content-center align-items-sm-center">
+	{% if pageinfo.previouspage %}
+	<a class="btn btn-success" href="{{ pageinfo.previouspage }}"><</a>
+	{% else %}
+	<button class="btn btn-success" disabled><</button>
+	{% endif %}
+
+	<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+
+	{% if pageinfo.nextpage %}
+	<a class="btn btn-success" href="{{ pageinfo.nextpage }}">></a>
+	{% else %}
+	<button class="btn btn-success" disabled>></button>
+	{% endif %}
+</div>
 {% endblock %}

@@ -214,30 +214,45 @@ def new_observation():
 
     today = datetime.now().strftime('%Y-%m-%d')
 
-    return render_template('new_observation.html', title='Uusi havainto', birdpattern=birdpattern, birds=birds, locationpattern=locationpattern, locations=locations, today=today)
+    return render_template('new_observation.html', title='Uusi havainto', birdpattern=birdpattern, birds=birds,
+                           locationpattern=locationpattern, locations=locations, today=today)
 
 
 @app.route('/observations')
-def observations():
-    sql = 'SELECT u.realname, b.fi, b.sci, o.bird_count, i.id AS img_id, o.observation_date AS date, o.id \
+def page0():
+    return redirect('/observations/1')
+
+
+@app.route('/observations/<int:page>')
+def observations(page):
+    pagesize = 5
+    sql = f'SELECT u.realname, b.fi, b.sci, o.bird_count, i.id AS imgid, o.observation_date AS date, o.id \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN birds b ON o.bird_id=b.id \
             LEFT JOIN images i ON o.id=i.observation_id \
-            ORDER BY date DESC'
+            ORDER BY date DESC \
+            LIMIT {pagesize} OFFSET {pagesize * (page - 1)}'
     result = db.session.execute(sql).fetchall()
     observations = []
     for o in result:
-        observations.append({'user': o[0], 'birdfi': o[1], 'birdsci': o[2], 'count': o[3], 'imgid': o[4], 'date': o[5].strftime('%-d.%-m.%Y')})
-    print(observations)
-    return render_template('observations.html', title='Lintuloki - Havainnot', observations=observations)
+        observations.append({'user': o[0], 'birdfi': o[1], 'birdsci': o[2],
+                            'count': o[3], 'imgid': o[4], 'date': o[5].strftime('%-d.%-m.%Y')})
+    pageinfo = {'pagenumber': page}
+    if page > 1:
+        pageinfo['previouspage'] = page - 1
+    if len(observations) == pagesize:
+        pageinfo['nextpage'] = page + 1
+    return render_template('observations.html', title='Lintuloki - Havainnot', observations=observations, pageinfo=pageinfo,
+                           lastpage=(len(observations) < 5))
+
 
 @app.route('/images/<int:id>')
 def image(id):
     sql = 'SELECT binarydata, imagename FROM images WHERE id=:id'
     # result = [(<binarydata>, 'imagename')]
-    result = db.session.execute(sql, {'id':id}).fetchall()
+    result = db.session.execute(sql, {'id': id}).fetchall()
     response = make_response(bytes(result[0][0]))
-    imagetype = result[0][1].rsplit('.',1)[1].lower()
-    response.headers.set('Content-Type',f'image/{imagetype}')
+    imagetype = result[0][1].rsplit('.', 1)[1].lower()
+    response.headers.set('Content-Type', f'image/{imagetype}')
     return response
