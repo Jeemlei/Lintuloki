@@ -12,14 +12,14 @@
 				count-option 	: text 			("one"/"many")
 				count 			: number/empty
 				banded-option 	: text 			("true"/"false"/"not_known")
-				band-serial 		: text/empty
+				band-serial 	: text/empty
 				uploadImage 	: file/empty 	(.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
 			-->
 			<form method="post" enctype="multipart/form-data" action="/new-observation">
 				<div class="row">
 					<div class="col form-floating mb-3">
 						<input
-							class="form-control"
+							class="form-control custom-input"
 							name="bird"
 							id="bird"
 							placeholder="Lintu"
@@ -37,7 +37,7 @@
 					</div>
 					<div class="col form-floating mb-3">
 						<input
-							class="form-control"
+							class="form-control custom-input"
 							name="location"
 							id="location"
 							placeholder="Kunta"
@@ -63,7 +63,7 @@
 							</span>
 							<input
 								style="width: 10rem"
-								class="form-control"
+								class="form-control custom-input"
 								type="date"
 								id="date"
 								name="date"
@@ -86,7 +86,7 @@
 					<div class="col">
 						<div class="form-check">
 							<input
-								class="form-check-input"
+								class="form-check-input custom-radio custom-input"
 								type="radio"
 								name="count-option"
 								id="one"
@@ -108,7 +108,7 @@
 					<div class="col">
 						<div class="form-check">
 							<input
-								class="form-check-input"
+								class="form-check-input custom-radio custom-input"
 								type="radio"
 								name="count-option"
 								id="many"
@@ -125,7 +125,7 @@
 							<div style="width: 9rem" class="input-group mb-3">
 								<span class="input-group-text" id="count-label">Lkm:</span>
 								<input
-									class="form-control"
+									class="form-control custom-input"
 									type="number"
 									min="2"
 									name="count"
@@ -148,7 +148,7 @@
 					<div class="col">
 						<div class="form-check form-check-inline">
 							<input
-								class="form-check-input"
+								class="form-check-input custom-radio custom-input"
 								type="radio"
 								name="banded-option"
 								id="true"
@@ -165,7 +165,7 @@
 						</div>
 						<div class="form-check form-check-inline">
 							<input
-								class="form-check-input"
+								class="form-check-input custom-radio custom-input"
 								type="radio"
 								name="banded-option"
 								id="false"
@@ -182,7 +182,7 @@
 						</div>
 						<div class="form-check form-check-inline">
 							<input
-								class="form-check-input"
+								class="form-check-input custom-radio custom-input"
 								type="radio"
 								name="banded-option"
 								id="not_known"
@@ -204,7 +204,7 @@
 					<div class="col form-floating mb-3">
 						<input
 							style="margin-bottom: 0px"
-							class="plain-input form-control"
+							class="plain-input form-control custom-input"
 							type="text"
 							name="band-serial"
 							id="band-serial"
@@ -223,7 +223,7 @@
 						</label>
 						<input
 							type="file"
-							class="form-control"
+							class="form-control custom-input"
 							name="uploadImage"
 							id="uploadImage"
 							accept=".apng,.avif,.gif,.jpg,.jpeg,.jfif,.pjpeg,.pjp,.png,.svg,.webp"

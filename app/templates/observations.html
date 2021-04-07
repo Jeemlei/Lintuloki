@@ -1,23 +1,219 @@
-{% extends "layout.html" %}
-{% block content %}
-<div style="margin-bottom: 10px;" class="d-flex justify-content-center align-items-sm-center">
-	{% if pageinfo.previouspage %}
-	<a class="btn btn-success" href="{{ pageinfo.previouspage }}"><</a>
-	{% else %}
-	<button class="btn btn-success" disabled><</button>
-	{% endif %}
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center align-items-sm-center">
+	<div
+		class="card"
+		style="
+			width: 35rem;
+			margin-bottom: 10px;
+			background-color: #eee;
+			border-color: #eee;
+		"
+	>
+		<div
+			class="card-header"
+			style="
+				padding-left: 0px;
+				padding-right: 0px;
+				background-color: #eee;
+				border-color: #eee;
+			"
+		>
+			<h4 style="margin: 0px">Hae havaintoja</h4>
+		</div>
+		<div class="card-body" style="padding: 0px">
+			<!--Form will return the following:
+				criterion	: text			("all"/"bird"/"location"/"band"/"observer")
+				keyword		: text/empty
+				from		: date
+				to			: date
+			-->
+			<form
+				style="padding-left: 0px; padding-right: 0px"
+				method="POST"
+				action="/observations/1"
+			>
+				<div class="row">
+					<div class="col">
+						<input
+							class="form-check-input custom-radio custom-input"
+							type="radio"
+							name="criterion"
+							id="all"
+							value="all"
+							onclick="setSearchDisabled()"
+						/>
+						<label style="margin-left: 0px" class="form-check-label" for="all">
+							Kaikki
+						</label>
+					</div>
+					<div class="col">
+						<input
+							class="form-check-input custom-radio custom-input"
+							type="radio"
+							name="criterion"
+							id="bird"
+							value="bird"
+							onclick="setSearchActive()"
+						/>
+						<label style="margin-left: 0px" class="form-check-label" for="bird">
+							Lintu
+						</label>
+					</div>
+					<div class="col">
+						<input
+							class="form-check-input custom-radio custom-input"
+							type="radio"
+							name="criterion"
+							id="location"
+							value="location"
+							onclick="setSearchActive()"
+						/>
+						<label
+							style="margin-left: 0px"
+							class="form-check-label"
+							for="location"
+						>
+							Sijainti
+						</label>
+					</div>
+					<div class="col">
+						<input
+							class="form-check-input custom-radio custom-input"
+							type="radio"
+							name="criterion"
+							id="band"
+							value="band"
+							onclick="setSearchActive()"
+						/>
+						<label style="margin-left: 0px" class="form-check-label" for="band">
+							Rengas
+						</label>
+					</div>
+					<div class="col">
+						<input
+							class="form-check-input custom-radio custom-input"
+							type="radio"
+							name="criterion"
+							id="observer"
+							value="observer"
+							onclick="setSearchActive()"
+						/>
+						<label
+							style="margin-left: 0px"
+							class="form-check-label"
+							for="observer"
+						>
+							Bongari
+						</label>
+					</div>
+				</div>
 
-	<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+				<div style="margin-top: 5px" class="row">
+					<div class="col">
+						{% if form_content.criterion == 'all' %}
+						<input
+							class="plain-input form-control custom-input"
+							type="text"
+							name="keyword"
+							id="keyword"
+							placeholder="hakusana"
+							disabled
+						/>
+						{% else %}
+						<input
+							class="plain-input form-control custom-input"
+							type="text"
+							name="keyword"
+							id="keyword"
+							value="{{ form_content.keyword }}"
+							placeholder="hakusana"
+						/>
+						{% endif %}
+					</div>
+				</div>
 
-	{% if pageinfo.nextpage %}
-	<a class="btn btn-success" href="{{ pageinfo.nextpage }}">></a>
-	{% else %}
-	<button class="btn btn-success" disabled>></button>
-	{% endif %}
+				<div style="padding-left: 5px" class="row">
+					<div class="col">
+						<h5>Aikaväli:</h5>
+					</div>
+				</div>
+				<div class="row">
+					<div style="padding-right: 0px" class="col">
+						<div class="input-group mb-3">
+							<input
+								style="width: 10rem"
+								class="form-control custom-input"
+								type="date"
+								id="from"
+								name="from"
+								value="{{ form_content.start_date }}"
+								min="{{ form_content.start_date }}"
+								max="{{ form_content.end_date }}"
+							/>
+						</div>
+					</div>
+					<div style="text-align: center; padding: 0px" class="col">
+						<h3>-</h3>
+					</div>
+					<div style="padding-left: 0px" class="col">
+						<div class="input-group mb-3">
+							<input
+								style="width: 10rem"
+								class="form-control custom-input"
+								type="date"
+								id="to"
+								name="to"
+								value="{{ form_content.end_date }}"
+								min="{{ form_content.start_date }}"
+								max="{{ form_content.end_date }}"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-success" type="submit">Hae</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
+
+<div
+	style="margin-bottom: 10px"
+	class="d-flex justify-content-center align-items-sm-center"
+>
+	<div>
+		{% if pageinfo.previouspage %}
+		<a class="btn btn-success" href="{{ pageinfo.previouspage }}">&lt;</a>
+		{% else %}
+		<button class="btn btn-success" disabled>&lt;</button>
+		{% endif %}
+	</div>
+
+	<div style="text-align: center">
+		<div style="margin-bottom: -5px; margin-left: 3px; margin-right: 3px">
+			Sivu
+		</div>
+		<div>
+			<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+		</div>
+	</div>
+
+	<div>
+		{% if pageinfo.nextpage %}
+		<a class="btn btn-success" href="{{ pageinfo.nextpage }}">&gt;</a>
+		{% else %}
+		<button class="btn btn-success" disabled>&gt;</button>
+		{% endif %}
+	</div>
+</div>
+
 {% for observation in observations %}
 <div class="d-flex justify-content-center align-items-sm-center">
-	<div class="card" style="width: 25rem; margin-bottom: 10px">
+	<div class="card" style="width: 35rem; margin-bottom: 10px">
 		<div class="card-header">
 			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
 			<i>{{ observation.birdsci }}</i>
@@ -27,16 +223,14 @@
 			<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
 			<p><b>Bongari:</b> {{ observation.user }}</p>
 			{% if observation.imgid %}
-			<a href="/images/{{ observation.imgid }}"
-				><img style="width: 23rem" src="/images/{{ observation.imgid }}"
-			/></a>
+			<a href="/images/{{ observation.imgid }}">
+				<img style="max-width: 100%" src="/images/{{ observation.imgid }}" />
+			</a>
 			{% endif %}
 		</div>
 	</div>
 </div>
-{% endfor %}
-
-{% if lastpage %}
+{% endfor %} {% if lastpage %}
 <div class="d-flex justify-content-center align-items-sm-center">
 	<div class="card" style="width: 25rem; margin-bottom: 10px">
 		<div class="card-header">
@@ -47,18 +241,57 @@
 {% endif %}
 
 <div class="d-flex justify-content-center align-items-sm-center">
-	{% if pageinfo.previouspage %}
-	<a class="btn btn-success" href="{{ pageinfo.previouspage }}"><</a>
-	{% else %}
-	<button class="btn btn-success" disabled><</button>
-	{% endif %}
+	<div>
+		{% if pageinfo.previouspage %}
+		<a class="btn btn-success" href="{{ pageinfo.previouspage }}">&lt;</a>
+		{% else %}
+		<button class="btn btn-success" disabled>&lt;</button>
+		{% endif %}
+	</div>
 
-	<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+	<div style="text-align: center">
+		<div style="margin-bottom: -5px; margin-left: 3px; margin-right: 3px">
+			Sivu
+		</div>
+		<div>
+			<span style="margin: 5px">{{ pageinfo.pagenumber }}</span>
+		</div>
+	</div>
 
-	{% if pageinfo.nextpage %}
-	<a class="btn btn-success" href="{{ pageinfo.nextpage }}">></a>
-	{% else %}
-	<button class="btn btn-success" disabled>></button>
-	{% endif %}
+	<div>
+		{% if pageinfo.nextpage %}
+		<a class="btn btn-success" href="{{ pageinfo.nextpage }}">&gt;</a>
+		{% else %}
+		<button class="btn btn-success" disabled>&gt;</button>
+		{% endif %}
+	</div>
 </div>
+
+<script>
+	var criterion = "{{ form_content.criterion }}"
+	window.onload = document.getElementById(criterion).checked = true
+
+	function setInputActive(inputId, active) {
+		document.getElementById(inputId).disabled = !active
+	}
+
+	function setInputRequired(inputId, required) {
+		document.getElementById(inputId).required = required
+	}
+
+	function resetInputValue(inputId) {
+		document.getElementById(inputId).value = null
+	}
+
+	function setSearchActive() {
+		setInputActive('keyword', true)
+		setInputRequired('keyword', true)
+	}
+
+	function setSearchDisabled(params) {
+		setInputActive('keyword', false)
+		setInputRequired('keyword', false)
+		resetInputValue('keyword')
+	}
+</script>
 {% endblock %}

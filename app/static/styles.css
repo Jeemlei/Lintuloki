@@ -1,5 +1,5 @@
 body {
-	padding-bottom: 140px;
+	padding-bottom: 150px;
 	background-color: #eee;
 }
 
@@ -32,10 +32,20 @@ h1 {
 	color: #000034;
 }
 
-a  {
+a {
 	color: #198754;
 }
 
 a:hover {
-    color: #16804e;
+	color: #16804e;
+}
+
+.custom-radio:checked {
+	background-color: #198754;
+	border-color: #198754;
+}
+
+.custom-input:focus {
+	border-color: #198754;
+	box-shadow: 0px 0px 1px #fff, 0px 0px 8px #198754;
 }

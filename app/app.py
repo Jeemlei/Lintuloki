@@ -19,16 +19,17 @@ def handle_not_found(e):
 app.register_error_handler(404, handle_not_found)
 
 
-def authorized_user(admin):
+def authorized_user(checkAdmin):
     try:
         print('Checking login status...')
         user_id = session['user_id']
         username = session['username']
-        if admin:
+        if checkAdmin:
             print('Checking admin privileges...')
             admin = db.session.execute('SELECT admin_status FROM users WHERE id=:id AND username=:username', {
-                                       'id': user_id, 'username': username})
-            abort(403)
+                                       'id': user_id, 'username': username}).fetchone()['admin_status']
+            if not admin:
+                abort(403)
         print(username, 'authorized!')
         return True
     except Exception as e:
@@ -223,28 +224,86 @@ def page0():
     return redirect('/observations/1')
 
 
-@app.route('/observations/<int:page>')
+@app.route('/observations/<int:page>', methods=['GET', 'POST'])
 def observations(page):
+    # -- POSSIBLE SEARCH VALUES --
+    # criterion	: string		("all"/"bird"/"location"/"band"/"observer")
+    # keyword	: string/None
+    # from		: string        (yyyy-mm-dd)
+    # to		: string        (yyyy-mm-dd)
+    criterion = 'all'
+    keyword = ''
+    start_date = '2021-01-01'
+    end_date = datetime.now().strftime('%Y-%m-%d')
+
+    try:
+        criterion = request.form['criterion']
+        try:
+            keyword = request.form['keyword']
+        except:
+            print('No keyword')
+        start_date = request.form['from']
+        end_date = request.form['to']
+        print('New search')
+    except:
+        searchCookie = request.cookies.get('search')
+        if searchCookie:
+            searchCookie = searchCookie.split(';')
+            criterion = searchCookie[0]
+            keyword = searchCookie[1]
+            start_date = searchCookie[2]
+            end_date = searchCookie[3]
+            print('Existing search')
+
     pagesize = 5
-    sql = f'SELECT u.realname, b.fi, b.sci, o.bird_count, i.id AS imgid, o.observation_date AS date, o.id \
+
+    params = {'bird': '%', 'location': '%', 'observer': '%',
+              'start_date': start_date, 'end_date': end_date}
+    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, o.bird_count, u.realname, i.id AS imgid \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
+            INNER JOIN locations l ON o.location_id=l.id \
             INNER JOIN birds b ON o.bird_id=b.id \
             LEFT JOIN images i ON o.id=i.observation_id \
+            WHERE b.fi ILIKE :bird \
+                AND (l.muni ILIKE :location OR l.prov ILIKE :location) '
+    if criterion == 'band':
+        sql += 'AND o.band_serial ILIKE :band_serial'
+        params['band_serial'] = f'%{keyword}%'
+    sql += f"   AND (u.realname ILIKE :observer OR u.username ILIKE :observer) \
+                AND o.observation_date>=TO_DATE(:start_date, 'YYYY-MM-DD') \
+                AND o.observation_date<=TO_DATE(:end_date, 'YYYY-MM-DD') \
             ORDER BY date DESC \
-            LIMIT {pagesize} OFFSET {pagesize * (page - 1)}'
-    result = db.session.execute(sql).fetchall()
+            LIMIT {pagesize} OFFSET {pagesize * (page - 1)}"
+
+    if criterion == 'bird':
+        params['bird'] = f'%{keyword}%'
+    elif criterion == 'location':
+        params['location'] = f'%{keyword}%'
+    elif criterion == 'observer':
+        params['observer'] = f'%{keyword}%'
+
+    print('QUERY:', sql)
+    print('PARAMS:', params)
+    result = db.session.execute(sql, params).fetchall()
     observations = []
     for o in result:
-        observations.append({'user': o[0], 'birdfi': o[1], 'birdsci': o[2],
-                            'count': o[3], 'imgid': o[4], 'date': o[5].strftime('%-d.%-m.%Y')})
+        print(o)
+        observations.append({'birdfi': o[0], 'birdsci': o[1], 'date': o[2].strftime('%-d.%-m.%Y'), 'muni': o[3],
+                             'prov': o[4], 'count': o[5], 'user': o[6], 'imgid': o[7]})
+
     pageinfo = {'pagenumber': page}
     if page > 1:
         pageinfo['previouspage'] = page - 1
     if len(observations) == pagesize:
         pageinfo['nextpage'] = page + 1
-    return render_template('observations.html', title='Lintuloki - Havainnot', observations=observations, pageinfo=pageinfo,
-                           lastpage=(len(observations) < 5))
+    form_content = {'criterion': criterion, 'keyword': keyword,
+                    'start_date': start_date, 'end_date': end_date}
+
+    resp = make_response(render_template('observations.html', title='Lintuloki - Havainnot', observations=observations,
+                                         pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
+    resp.set_cookie('search', f'{criterion};{keyword};{start_date};{end_date}')
+    return resp
 
 
 @app.route('/images/<int:id>')
