@@ -19,5 +19,11 @@ Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraav
 - Ulos kirjautuminen
 - Uusien havaintojen luominen
 - Kuvan lisääminen havainnon yhteyteen
+- Havaintojen tarkastelu
+- Havaintojen hakeminen tietyltä aikaväliltä eri kriteereillä
+  - Linnun laji
+  - Havintopaikka (kunta tai maakunta)
+  - Linnun renkaan kirjainkoodi ja sarjanumero
+  - Havainnon tehnyt bongari (nimi tai käyttäjätunnus)
 
 Kaikki toiminnot ovat kohtuullisen yksiselitteisiä ja niihin pääsee käsiksi navigointipalkin linkeistä.
