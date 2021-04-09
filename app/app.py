@@ -220,8 +220,10 @@ def new_observation():
 
 
 @app.route('/observations')
-def page0():
-    return redirect('/observations/1')
+def resetSearch():
+    resp = make_response(redirect('/observations/1'))
+    resp.set_cookie('search', f'all;;2021-01-01;{datetime.now().strftime("%Y-%m-%d")}')
+    return resp
 
 
 @app.route('/observations/<int:page>', methods=['GET', 'POST'])
@@ -244,7 +246,6 @@ def observations(page):
             print('No keyword')
         start_date = request.form['from']
         end_date = request.form['to']
-        print('New search')
     except:
         searchCookie = request.cookies.get('search')
         if searchCookie:
@@ -253,7 +254,6 @@ def observations(page):
             keyword = searchCookie[1]
             start_date = searchCookie[2]
             end_date = searchCookie[3]
-            print('Existing search')
 
     pagesize = 5
 
@@ -283,12 +283,9 @@ def observations(page):
     elif criterion == 'observer':
         params['observer'] = f'%{keyword}%'
 
-    print('QUERY:', sql)
-    print('PARAMS:', params)
     result = db.session.execute(sql, params).fetchall()
     observations = []
     for o in result:
-        print(o)
         observations.append({'birdfi': o[0], 'birdsci': o[1], 'date': o[2].strftime('%-d.%-m.%Y'), 'muni': o[3],
                              'prov': o[4], 'count': o[5], 'user': o[6], 'imgid': o[7]})
 
@@ -297,8 +294,8 @@ def observations(page):
         pageinfo['previouspage'] = page - 1
     if len(observations) == pagesize:
         pageinfo['nextpage'] = page + 1
-    form_content = {'criterion': criterion, 'keyword': keyword,
-                    'start_date': start_date, 'end_date': end_date}
+    form_content = {'criterion': criterion, 'keyword': keyword, 'start_date': start_date,
+                    'end_date': end_date, 'today': datetime.now().strftime('%Y-%m-%d')}
 
     resp = make_response(render_template('observations.html', title='Lintuloki - Havainnot', observations=observations,
                                          pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
