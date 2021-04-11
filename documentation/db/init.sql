@@ -629,4 +629,5 @@ INSERT INTO birds (sci,fi,sv,en) VALUES ('Anser caerulescens','Lumihanhi','Snög
 INSERT INTO birds (sci,fi,sv,en) VALUES ('Anthus campestris','Nummikirvinen','Fältpiplärka','Tawny Pipit');
 INSERT INTO birds (sci,fi,sv,en) VALUES ('Anser erythropus','Kiljuhanhi','Fjällgås','Lesser White-fronted Goose');
 INSERT INTO birds (sci,fi,sv,en) VALUES ('Calidris minuta','Pikkusirri','Småsnäppa','Little Stint');
+INSERT INTO birds (sci,fi,sv,en) VALUES ('Ardea alba','Jalohaikara','Ägretthäger','Great egret');
 /* ------------------------------------------------ */
