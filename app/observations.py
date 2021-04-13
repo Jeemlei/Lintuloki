@@ -33,6 +33,8 @@ def create_observation(request_form):
 
         elif request_form['count-option'] == 'many':
             count = request_form['count']
+            if count < 2 or 1000 < count:
+                abort(400)
             observation_id = db.session.execute(sql, {'user_id': session['user_id'], 'location_id': location_id, 'bird_id': bird_id,
                                                       'observation_date': request_form['date'], 'count': count, 'banded': 'not_known',
                                                       'band_serial': None}).fetchone()[0]
@@ -91,7 +93,7 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     params = {'bird': '%', 'location': '%', 'observer': '%',
               'start_date': start_date, 'end_date': end_date}
 
-    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, o.bird_count, u.realname, i.id AS imgid \
+    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, o.bird_count, u.realname, i.id, o.id AS obsid \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN locations l ON o.location_id=l.id \
@@ -105,7 +107,7 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     sql += f"   AND (u.realname ILIKE :observer OR u.username ILIKE :observer) \
                 AND o.observation_date>=TO_DATE(:start_date, 'YYYY-MM-DD') \
                 AND o.observation_date<=TO_DATE(:end_date, 'YYYY-MM-DD') \
-            ORDER BY date DESC \
+            ORDER BY date DESC, obsid DESC \
             LIMIT {pagesize} OFFSET {pagesize * (page - 1)}"
 
     if criterion == 'bird':
