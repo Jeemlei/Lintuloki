@@ -224,7 +224,7 @@
 			<p><b>Bongari:</b> {{ observation.user }}</p>
 			{% if observation.imgid %}
 			<a href="/images/{{ observation.imgid }}">
-				<img style="max-width: 100%" src="/images/{{ observation.imgid }}" />
+				<img style="max-width: 100%;max-height: 35rem" src="/images/{{ observation.imgid }}" />
 			</a>
 			{% endif %}
 		</div>
@@ -232,7 +232,7 @@
 </div>
 {% endfor %} {% if lastpage %}
 <div class="d-flex justify-content-center align-items-sm-center">
-	<div class="card" style="width: 25rem; margin-bottom: 10px">
+	<div class="card" style="margin-bottom: 10px">
 		<div class="card-header">
 			<h5 style="margin: 0px">Ei enempää havaintoja</h5>
 		</div>
