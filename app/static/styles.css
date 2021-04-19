@@ -1,6 +1,12 @@
+html {
+	height: 100%;
+}
 body {
-	padding-bottom: 150px;
+	height: 91%;
+	/*padding-bottom: 150px;*/
 	background-color: #eee;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 hr {
@@ -16,12 +22,18 @@ label {
 	margin-left: 10px;
 }
 
+.wrapper {
+	min-height: 90%;
+	margin-top: 80px;
+	margin-bottom: -50px;
+}
+.push {
+	height: 50px;
+}
 footer {
-	position: fixed;
-	left: 0;
-	bottom: 0;
 	width: 100%;
 	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .plain-input {

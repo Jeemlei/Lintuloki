@@ -143,7 +143,7 @@ def get_observation(id):
     result = db.session.execute(sql, params).fetchone()
     observation = {'birdfi': result[0], 'birdsci': result[1], 'date': result[2].strftime('%-d.%-m.%Y'), 'muni': result[3],
                    'prov': result[4], 'count': result[5], 'user': result[6], 'usernick': result[7], 'imgid': result[8],
-                   'banded': result[9], 'band_serial': result[10]}
+                   'banded': result[9], 'band_serial': result[10], 'obsid': id}
 
     return observation
 

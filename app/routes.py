@@ -104,6 +104,11 @@ def resetSearch():
     return resp
 
 
+@app.route('/observations/<int:id>')
+def observation(id):
+    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id))
+
+
 @app.route('/observations/page/<int:page>', methods=['GET', 'POST'])
 def observations(page):
     # -- POSSIBLE SEARCH VALUES --
@@ -149,8 +154,3 @@ def observations(page):
                                          pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
     resp.set_cookie('search', f'{criterion};{keyword};{start_date};{end_date}')
     return resp
-
-
-@app.route('/observations/<int:id>')
-def observation(id):
-    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id))
