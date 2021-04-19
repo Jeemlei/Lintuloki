@@ -213,18 +213,23 @@
 
 {% for observation in observations %}
 <div class="d-flex justify-content-center align-items-sm-center">
-	<div class="card" style="width: 35rem; margin-bottom: 10px">
-		<div class="card-header">
-			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
-			<i>{{ observation.birdsci }}</i>
-		</div>
+	<div class="card" style="width: 30rem; margin-bottom: 10px">
+		<a href="/observations/{{ observation.obsid }}">
+			<div class="card-header">
+				<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
+				<i>{{ observation.birdsci }}</i>
+			</div>
+		</a>
 		<div class="card-body">
 			<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
 			<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
 			<p><b>Bongari:</b> {{ observation.user }}</p>
 			{% if observation.imgid %}
 			<a href="/images/{{ observation.imgid }}">
-				<img style="max-width: 100%;max-height: 35rem" src="/images/{{ observation.imgid }}" />
+				<img
+					style="max-width: 100%; max-height: 15rem"
+					src="/images/{{ observation.imgid }}"
+				/>
 			</a>
 			{% endif %}
 		</div>
@@ -268,7 +273,7 @@
 </div>
 
 <script>
-	var criterion = "{{ form_content.criterion }}"
+	var criterion = '{{ form_content.criterion }}'
 	window.onload = document.getElementById(criterion).checked = true
 
 	function setInputActive(inputId, active) {

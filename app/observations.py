@@ -93,7 +93,7 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     params = {'bird': '%', 'location': '%', 'observer': '%',
               'start_date': start_date, 'end_date': end_date}
 
-    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, u.realname, i.id, o.id AS obsid \
+    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, u.username, i.id, o.id AS obsid \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN locations l ON o.location_id=l.id \
@@ -123,9 +123,29 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     observations = []
     for o in result:
         observations.append({'birdfi': o[0], 'birdsci': o[1], 'date': o[2].strftime('%-d.%-m.%Y'), 'muni': o[3],
-                             'prov': o[4], 'user': o[5], 'imgid': o[6]})
+                             'prov': o[4], 'user': o[5], 'imgid': o[6], 'obsid': o[7]})
 
     return observations
+
+
+def get_observation(id):
+    params = {'id': id}
+
+    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, \
+                    o.bird_count, u.realname, u.username, i.id, o.banded, o.band_serial \
+            FROM observations o \
+            INNER JOIN users u ON o.user_id=u.id \
+            INNER JOIN locations l ON o.location_id=l.id \
+            INNER JOIN birds b ON o.bird_id=b.id \
+            LEFT JOIN images i ON o.id=i.observation_id \
+            WHERE o.id=:id'
+
+    result = db.session.execute(sql, params).fetchone()
+    observation = {'birdfi': result[0], 'birdsci': result[1], 'date': result[2].strftime('%-d.%-m.%Y'), 'muni': result[3],
+                   'prov': result[4], 'count': result[5], 'user': result[6], 'usernick': result[7], 'imgid': result[8],
+                   'banded': result[9], 'band_serial': result[10]}
+
+    return observation
 
 
 def get_image(id):

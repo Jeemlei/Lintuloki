@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, request, make_response
 from auth import authorized_user, new_user, start_session, end_session
-from observations import create_observation, create_image, get_birds, get_locations, get_observations, get_image
+from observations import create_observation, create_image, get_birds, get_locations, get_observations, get_observation, get_image
 from datetime import datetime
 
 
@@ -76,7 +76,7 @@ def new_observation():
 
         create_image(observation_id, request.files)
 
-        return redirect('/observations')
+        return redirect(f'/observations/{observation_id}')
 
     # ----- GET /new-observation -----
     birds = get_birds()
@@ -149,3 +149,8 @@ def observations(page):
                                          pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
     resp.set_cookie('search', f'{criterion};{keyword};{start_date};{end_date}')
     return resp
+
+
+@app.route('/observations/<int:id>')
+def observation(id):
+    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id))

@@ -1,0 +1,30 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center">
+	<div class="card" style="width: 45rem; margin-bottom: 10px">
+		<div class="card-header">
+			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
+			<i>{{ observation.birdsci }}</i>
+		</div>
+		<div class="card-body">
+			<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
+			<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
+			<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
+			{% if observation.banded == 'true' %}
+			<p><b>Rengasnumero:</b> {{ observation.band_serial }}</p>
+			{% endif %}
+			<p>
+				<b>Bongari:</b> {{ observation.user }}
+				<i>@{{ observation.usernick }}</i>
+			</p>
+			{% if observation.imgid %}
+			<a href="/images/{{ observation.imgid }}">
+				<img
+					style="max-width: 100%; max-height: 100rem"
+					src="/images/{{ observation.imgid }}"
+				/>
+			</a>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
