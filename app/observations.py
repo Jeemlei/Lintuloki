@@ -93,7 +93,7 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     params = {'bird': '%', 'location': '%', 'observer': '%',
               'start_date': start_date, 'end_date': end_date}
 
-    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, o.bird_count, u.realname, i.id, o.id AS obsid \
+    sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, u.realname, i.id, o.id AS obsid \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN locations l ON o.location_id=l.id \
@@ -123,7 +123,7 @@ def get_observations(criterion, keyword, start_date, end_date, page, pagesize):
     observations = []
     for o in result:
         observations.append({'birdfi': o[0], 'birdsci': o[1], 'date': o[2].strftime('%-d.%-m.%Y'), 'muni': o[3],
-                             'prov': o[4], 'count': o[5], 'user': o[6], 'imgid': o[7]})
+                             'prov': o[4], 'user': o[5], 'imgid': o[6]})
 
     return observations
 

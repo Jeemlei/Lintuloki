@@ -86,15 +86,25 @@ def new_observation():
                            locationpattern=locations[1], locations=locations[0], today=datetime.now().strftime('%Y-%m-%d'))
 
 
+@app.route('/images/<int:id>')
+def image(id):
+    image = get_image(id)
+    # image = [(<binarydata>, 'imagename')]
+    response = make_response(bytes(image[0][0]))
+    imagetype = image[0][1].rsplit('.', 1)[1].lower()
+    response.headers.set('Content-Type', f'image/{imagetype}')
+    return response
+
+
 @app.route('/observations')
 def resetSearch():
-    resp = make_response(redirect('/observations/1'))
+    resp = make_response(redirect('/observations/page/1'))
     resp.set_cookie('search',
                     f'all;;2021-01-01;{datetime.now().strftime("%Y-%m-%d")}')
     return resp
 
 
-@app.route('/observations/<int:page>', methods=['GET', 'POST'])
+@app.route('/observations/page/<int:page>', methods=['GET', 'POST'])
 def observations(page):
     # -- POSSIBLE SEARCH VALUES --
     # criterion	: string		("all"/"bird"/"location"/"band"/"observer")
@@ -139,13 +149,3 @@ def observations(page):
                                          pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
     resp.set_cookie('search', f'{criterion};{keyword};{start_date};{end_date}')
     return resp
-
-
-@app.route('/images/<int:id>')
-def image(id):
-    image = get_image(id)
-    # image = [(<binarydata>, 'imagename')]
-    response = make_response(bytes(image[0][0]))
-    imagetype = image[0][1].rsplit('.', 1)[1].lower()
-    response.headers.set('Content-Type', f'image/{imagetype}')
-    return response

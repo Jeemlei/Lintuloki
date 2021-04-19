@@ -220,7 +220,7 @@
 		</div>
 		<div class="card-body">
 			<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
-			<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
+			<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
 			<p><b>Bongari:</b> {{ observation.user }}</p>
 			{% if observation.imgid %}
 			<a href="/images/{{ observation.imgid }}">
