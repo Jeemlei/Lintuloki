@@ -41,11 +41,11 @@ footer {
 }
 
 h1 {
-	color: #000034;
+	color: #146c43;
 }
 
 a {
-	color: #198754;
+	color: #643700;
 }
 
 a:hover {
@@ -60,4 +60,12 @@ a:hover {
 .custom-input:focus {
 	border-color: #198754;
 	box-shadow: 0px 0px 1px #fff, 0px 0px 8px #198754;
+}
+
+.comment {
+	margin-bottom: 10px;
+	padding: .5rem;
+	border-radius: .25rem;
+	color: white;
+	background-color: #146c43;
 }

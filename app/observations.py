@@ -49,20 +49,33 @@ def create_observation(request_form):
 
 
 def create_image(observation_id, form_files):
+    image = form_files['uploadImage']
+    imagename = image.filename
+    allowedFiles = ('.apng', '.avif', '.gif', '.jpg', '.jpeg',
+                    '.jfif', '.pjpeg', '.pjp', '.png', '.svg', '.webp')
+    if not imagename.lower().endswith(allowedFiles):
+        abort(415)
+
     try:
-        image = form_files['uploadImage']
-        imagename = image.filename
-        allowedFiles = ('.apng', '.avif', '.gif', '.jpg', '.jpeg',
-                        '.jfif', '.pjpeg', '.pjp', '.png', '.svg', '.webp')
-        if imagename.lower().endswith(allowedFiles):
-            imagedata = image.read()
-            sql = 'INSERT INTO images (observation_id, user_id, imagename, binarydata) \
+        imagedata = image.read()
+        sql = 'INSERT INTO images (observation_id, user_id, imagename, binarydata) \
                     VALUES (:observation_id, :user_id, :imagename, :data)'
-            db.session.execute(sql, {'observation_id': observation_id, 'user_id': session['user_id'],
-                                     'imagename': secure_filename(imagename), 'data': imagedata})
-            db.session.commit()
-        else:
-            abort(415)
+        db.session.execute(sql, {'observation_id': observation_id, 'user_id': session['user_id'],
+                                 'imagename': secure_filename(imagename), 'data': imagedata})
+        db.session.commit()
+
+    except Exception as e:
+        print('Exception:', e)
+        traceback.print_exc()
+
+
+def create_comment(obsid, content):
+    sql = 'INSERT INTO comments (observation_id, user_id, content) \
+            VALUES (:obsid, :user_id, :content)'
+    try:
+        db.session.execute(
+            sql, {'obsid': obsid, 'user_id': session['user_id'], 'content': content})
+        db.session.commit()
 
     except Exception as e:
         print('Exception:', e)
@@ -151,3 +164,19 @@ def get_observation(id):
 def get_image(id):
     sql = 'SELECT binarydata, imagename FROM images WHERE id=:id'
     return db.session.execute(sql, {'id': id}).fetchall()
+
+
+def get_comments(obsid):
+    sql = 'SELECT u.username, c.content, c.posting_time AS time \
+            FROM comments c \
+            INNER JOIN users u ON u.id=c.user_id \
+            WHERE c.observation_id=:obsid \
+            ORDER BY time DESC'
+
+    result = db.session.execute(sql, {'obsid': obsid}).fetchall()
+    comments = []
+    for c in result:
+        comments.append({'user': c[0], 'content': c[1], 'posting_time': c[2].strftime(
+            '%-d.%-m.%Y klo %-H.%M')})
+
+    return comments

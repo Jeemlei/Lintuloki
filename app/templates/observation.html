@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %}
 <div class="d-flex justify-content-center">
-	<div class="card" style="width: 45rem; margin-bottom: 10px">
+	<div class="card" style="width: 45rem; margin-bottom: 15px">
 		<div class="card-header">
 			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
 			<i>{{ observation.birdsci }}</i>
@@ -10,35 +10,71 @@
 			<img class="card-img-top" src="/images/{{ observation.imgid }}" />
 		</a>
 		{% endif %}
-		<div style="padding-bottom: 0px;" class="card-body">
-			<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
-			<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
-			<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
-			{% if observation.banded == 'true' %}
-			<p><b>Rengasnumero:</b> {{ observation.band_serial }}</p>
-			{% endif %}
-			<p>
-				<b>Bongari:</b> {{ observation.user }}
-				<i>@{{ observation.usernick }}</i>
-			</p>
-		</div>
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item">
-				<form method="POST" action="/comment/{{ observation.obsid }}">
-					<textarea
-						class="form-control"
-						name="comment"
-						id="comment"
-						rows="3"
-					></textarea>
-					<button style="margin-top: 5px" class="btn btn-success" type="submit">
-						Kommentoi
-					</button>
-				</form>
+				<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
+				<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
+				<p><b>Lintujen lukumäärä:</b> {{ observation.count }}</p>
+				{% if observation.banded == 'true' %}
+				<p><b>Rengasnumero:</b> {{ observation.band_serial }}</p>
+				{% endif %}
+				<p>
+					<b>Bongari:</b> {{ observation.user }}
+					<i>@{{ observation.usernick }}</i>
+				</p>
 			</li>
 		</ul>
+		<div style="padding-bottom: 0px" class="card-body">
+			{% if session.username %}
+			<!--Form will return the following:
+				comment	: text
+			-->
+			<form
+				style="margin-bottom: 10px"
+				method="POST"
+				action="/comment/{{ observation.obsid }}"
+			>
+				<textarea
+					style="resize: none"
+					class="form-control"
+					name="comment"
+					id="comment"
+					rows="3"
+					placeholder="Kirjoita kommentti"
+					maxlength="256"
+					required
+				></textarea>
+				<button style="margin-top: 5px" class="btn btn-success" type="submit">
+					Kommentoi
+				</button>
+			</form>
+			{% else %}
+			<!--Dummy form-->
+			<form style="margin-bottom: 10px">
+				<textarea
+					style="resize: none"
+					class="form-control"
+					rows="3"
+					placeholder="Kirjaudu sisään kommentoidaksesi"
+					disabled
+				></textarea>
+				<button style="margin-top: 5px" class="btn btn-success" disabled>
+					Kommentoi
+				</button>
+			</form>
+			{% endif %}
+		</div>
 		{% if comments %}
-		<div class="card-body">KOMMENTTEJA</div>
+		<ul class="list-group list-group-flush">
+			{% for comment in comments %}
+			<li class="list-group-item">
+				<p style="margin-top: 10px;margin-bottom: .5rem;">
+					<b>{{ comment.user }}</b> kommentoi<br />{{ comment.posting_time }}
+				</p>
+				<p class="comment">{{ comment.content }}</p>
+			</li>
+			{% endfor %}
+		</ul>
 		{% else %}
 		<div class="card-footer text-muted">Ei kommentteja</div>
 		{% endif %}

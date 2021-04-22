@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, request, make_response
 from auth import authorized_user, new_user, start_session, end_session
-from observations import create_observation, create_image, get_birds, get_locations, get_observations, get_observation, get_image
+from observations import create_observation, create_image, create_comment, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
 from datetime import datetime
 
 
@@ -40,7 +40,7 @@ def login():
         # username  : string
         # password  : string
         if start_session(request.form['username'], request.form['password']):
-            return redirect('/new-observation')
+            return redirect('/observations/page/1')
 
         return redirect('/login')
 
@@ -104,11 +104,6 @@ def resetSearch():
     return resp
 
 
-@app.route('/observations/<int:id>')
-def observation(id):
-    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id))
-
-
 @app.route('/observations/page/<int:page>', methods=['GET', 'POST'])
 def observations(page):
     # -- POSSIBLE SEARCH VALUES --
@@ -154,3 +149,19 @@ def observations(page):
                                          pageinfo=pageinfo, lastpage=(len(observations) < 5), form_content=form_content))
     resp.set_cookie('search', f'{criterion};{keyword};{start_date};{end_date}')
     return resp
+
+
+@app.route('/observations/<int:id>')
+def observation(id):
+    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id), comments=get_comments(id))
+
+
+@app.route('/comment/<int:obsid>', methods=['POST'])
+def comment(obsid):
+    if not authorized_user(False):
+        return redirect('/login')
+
+    # -- REQUEST VALUES --
+    # comment : string
+    create_comment(obsid, request.form['comment'])
+    return redirect(f'/observations/{obsid}')
