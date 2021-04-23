@@ -32,7 +32,7 @@ def create_observation(request_form):
                                                           'band_serial': None}).fetchone()[0]
 
         elif request_form['count-option'] == 'many':
-            count = request_form['count']
+            count = int(request_form['count'])
             if count < 2 or 1000 < count:
                 abort(400)
             observation_id = db.session.execute(sql, {'user_id': session['user_id'], 'location_id': location_id, 'bird_id': bird_id,
