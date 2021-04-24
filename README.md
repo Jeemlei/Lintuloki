@@ -14,6 +14,9 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 **Linkki herokuun**: [Lintuloki](https://lintuloki.herokuapp.com/)
 
 Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraavat [vaatimusmäärittelyssä](/documentation/requirements.md) kirjatut ominaisuudet:
+
+#### Välipalautus 2:
+
 - Uuden käyttäjän rekisteröiminen
 - Sisään kirjautuminen
 - Ulos kirjautuminen
@@ -25,5 +28,12 @@ Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraav
   - Havintopaikka (kunta tai maakunta)
   - Linnun renkaan kirjainkoodi ja sarjanumero
   - Havainnon tehnyt bongari (nimi tai käyttäjätunnus)
+
+#### Välipalautus 3:
+
+- Omien havaintojen muokkaaminen
+- Kuvan poistaminen
+- Kuvan lisääminen jälkikäteen havainnon yhteyteen
+- Havaintojen kommentointi
 
 Kaikki toiminnot ovat kohtuullisen yksiselitteisiä ja niihin pääsee käsiksi navigointipalkin linkeistä.
