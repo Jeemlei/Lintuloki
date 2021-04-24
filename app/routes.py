@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, request, make_response
-from auth import authorized_user, new_user, start_session, end_session
-from observations import create_observation, create_image, create_comment, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
+from auth import logged_in, authorized, new_user, start_session, end_session
+from observations import create_observation, create_image, create_comment, update_observation, delete_image, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
 from datetime import datetime
 
 
@@ -12,7 +12,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if authorized_user(False):
+    if logged_in(False):
         return redirect('/')
 
     if request.method == 'POST':
@@ -32,7 +32,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if authorized_user(False):
+    if logged_in(False):
         return redirect('/')
 
     if request.method == 'POST':
@@ -56,7 +56,7 @@ def logout():
 
 @app.route('/new-observation', methods=['GET', 'POST'])
 def new_observation():
-    if not authorized_user(False):
+    if not logged_in(False):
         return redirect('/login')
 
     if request.method == 'POST':
@@ -74,7 +74,8 @@ def new_observation():
         if not observation_id:
             return redirect('/new-observation')
 
-        create_image(observation_id, request.files)
+        if request.files['uploadImage']:
+            create_image(observation_id, request.files)
 
         return redirect(f'/observations/{observation_id}')
 
@@ -93,6 +94,7 @@ def image(id):
     response = make_response(bytes(image[0][0]))
     imagetype = image[0][1].rsplit('.', 1)[1].lower()
     response.headers.set('Content-Type', f'image/{imagetype}')
+    response.headers.set('Content-Disposition', f'inline; filename="{image[0][1]}"')
     return response
 
 
@@ -153,15 +155,49 @@ def observations(page):
 
 @app.route('/observations/<int:id>')
 def observation(id):
-    return render_template('observation.html', title='Lintuloki - Havainto', observation=get_observation(id), comments=get_comments(id))
+    observation = get_observation(id)
+    observation['date'] = observation['date'].strftime('%-d.%-m.%Y')
+    return render_template('observation.html', title='Lintuloki - Havainto', observation=observation, comments=get_comments(id))
 
 
 @app.route('/comment/<int:obsid>', methods=['POST'])
 def comment(obsid):
-    if not authorized_user(False):
+    if not logged_in(False):
         return redirect('/login')
 
     # -- REQUEST VALUES --
     # comment : string
     create_comment(obsid, request.form['comment'])
     return redirect(f'/observations/{obsid}')
+
+
+@app.route('/edit/<int:obsid>', methods=['GET', 'POST'])
+def edit(obsid):
+    if not authorized(obsid):
+        return redirect('/login')
+
+    if request.method == 'POST':
+        # -- REQUEST VALUES --
+        # deleteImg     : text          ("true"/"false")
+        # uploadImage   : file/empty    (.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
+        # date          : date
+        # location 	    : text
+        # count         : number        (1-1000)
+        # (band-serial  : text)
+        if request.form['deleteImg'] == 'true':
+            delete_image(obsid)
+
+        if request.files['uploadImage']:
+            delete_image(obsid)
+            create_image(obsid, request.files)
+
+        update_observation(obsid, request.form)
+
+        return redirect(f'/observations/{obsid}')
+
+    observation = get_observation(obsid)
+    observation['date'] = observation['date'].strftime('%Y-%m-%d')
+
+    locations = get_locations()
+
+    return render_template('edit.html', title='Lintuloki - Muokkaa', observation=observation, locationpattern=locations[1], locations=locations[0], comments=get_comments(obsid), today=datetime.now().strftime('%Y-%m-%d'))

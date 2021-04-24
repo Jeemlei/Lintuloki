@@ -1,0 +1,180 @@
+{% extends "layout.html" %} {% block content %}
+<div class="d-flex justify-content-center">
+	<div class="card" style="width: 45rem; margin-bottom: 15px">
+		<div class="card-header">
+			<h5 style="margin: 0px">{{ observation.birdfi }}</h5>
+			<i>{{ observation.birdsci }}</i>
+		</div>
+		<div class="card-body">
+			{% if observation.imgid %}
+			<img
+				id="image"
+				style="max-height: 20rem; max-width: 20rem"
+				class="card-img-top"
+				src="/images/{{ observation.imgid }}"
+			/>
+			<br />
+			<button
+				style="margin-top: 5px; margin-bottom: 5px"
+				type="button"
+				id="deletebtn"
+				class="btn btn-outline-danger"
+				onclick="deleteimg()"
+			>
+				Poista kuva
+			</button>
+			{% endif %}
+			<!--Form will return the following:
+                deleteImg       : text          ("true"/"false")
+                uploadImage     : file/empty    (.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
+                date            : date
+                location 	    : text
+                count 			: number        (1-1000)
+                (band-serial    : text)
+			-->
+			<form
+				style="padding: 0px"
+				method="POST"
+				enctype="multipart/form-data"
+				action="/edit/{{ observation.obsid }}"
+			>
+				<div class="form-group row">
+					<input type="hidden" name="deleteImg" id="deleteImg" value="false" />
+					<label for="uploadImage" class="col-sm-3 col-form-label">
+						{% if observation.imgid %}
+						<b>Vaihda kuva:</b>
+						{% else %}
+						<b>Lisää kuva:</b>
+						{% endif %}
+					</label>
+					<div class="col-sm-6">
+						<input
+							style="margin-bottom: 5px"
+							type="file"
+							class="form-control custom-input"
+							name="uploadImage"
+							id="uploadImage"
+							accept=".apng,.avif,.gif,.jpg,.jpeg,.jfif,.pjpeg,.pjp,.png,.svg,.webp"
+						/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="date" class="col-sm-3 col-form-label">
+						<b>Havaintopäivä:</b>
+					</label>
+					<div class="col-sm-6">
+						<input
+							style="width: 10rem; margin-bottom: 5px"
+							class="form-control custom-input"
+							type="date"
+							id="date"
+							name="date"
+							value="{{ observation.date }}"
+							min="2021-01-01"
+							max="{{ today }}"
+						/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="location" class="col-sm-3 col-form-label">
+						<b>Sijainti:</b>
+					</label>
+					<div class="col-sm-4">
+						<input
+							style="margin-bottom: 5px"
+							class="form-control custom-input"
+							name="location"
+							id="location"
+							placeholder="Kunta"
+							list="locations"
+							pattern="{{ locationpattern }}"
+							title="Valitsemaasi kuntaa ei ole listassa"
+							value="{{ observation.muni }}"
+							required
+						/>
+						<datalist id="locations">
+							{% for location in locations %}
+							<option value="{{ location }}"></option>
+							{% endfor %}
+						</datalist>
+					</div>
+				</div>
+				<div class="form-group row">
+					{% if observation.count == 1 %}
+                    <input type="hidden" name="count" id="count" value="1" />
+                        {% if observation.banded == 'true' %}
+					<label for="location" class="col-sm-3 col-form-label">
+						<b>Rengasnumero:</b>
+					</label>
+					<div class="col-sm-4">
+						<input
+							style="margin-bottom: 5px"
+							class="form-control custom-input"
+							name="band-serial"
+							id="band-serial"
+							placeholder="Rengas"
+							value="{{ observation.band_serial }}"
+							required
+						/>
+					</div>
+                        {% endif %}
+					{% else %}
+					<label for="location" class="col-sm-3 col-form-label">
+						<b>Lintujen lukumäärä:</b>
+					</label>
+					<div class="col-sm-4">
+						<input
+							style="margin-bottom: 5px"
+							class="form-control custom-input"
+							type="number"
+							placeholder="2-1000"
+							value="{{ observation.count }}"
+							min="2"
+							max="1000"
+							name="count"
+							id="count"
+						/>
+					</div>
+					{% endif %}
+				</div>
+				<button
+					style="margin-top: 10px; margin-left: 10px"
+					class="btn btn-success"
+					type="submit"
+				>
+					Tallenna
+				</button>
+			</form>
+		</div>
+		{% if comments %}
+		<div class="card-footer text-muted">Poista kommentteja:</div>
+		<ul class="list-group list-group-flush">
+			{% for comment in comments %}
+			<li class="list-group-item">
+				<p style="margin-top: 10px; margin-bottom: 0.5rem">
+					<b>{{ comment.user }}</b> kommentoi<br />{{ comment.posting_time }}
+				</p>
+				<p class="comment">{{ comment.content }}</p>
+			</li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<div class="card-footer text-muted">Ei kommentteja</div>
+		{% endif %}
+	</div>
+</div>
+
+<script>
+	function deleteimg() {
+		if (
+			confirm(
+				'Haluatko varmasti poistaa kuvan? Muista lopuksi tallentaa muutokset!'
+			)
+		) {
+			document.getElementById('deleteImg').value = 'true'
+			document.getElementById('deletebtn').style.display = 'none'
+			document.getElementById('image').style.display = 'none'
+		}
+	}
+</script>
+{% endblock %}

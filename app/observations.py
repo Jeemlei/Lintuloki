@@ -82,6 +82,46 @@ def create_comment(obsid, content):
         traceback.print_exc()
 
 
+def update_observation(obsid, request_form):
+    # date          : date
+    # location 	    : text
+    # count         : number        (1-1000)
+    # --------------
+    # band-serial   : text
+    sql = "UPDATE observations o \
+            SET location_id=:location_id, bird_count=:count, observation_date=TO_DATE(:date, 'YYYY-MM-DD'), band_serial=:band_serial \
+            WHERE id=:obsid"
+
+    try:
+        location_id = db.session.execute('SELECT id FROM locations WHERE muni=:location', {
+                                         'location': request_form['location']}).fetchone()['id']
+
+        params = {'location_id': location_id, 'count': request_form['count'],
+                  'date': request_form['date'], 'band_serial': None, 'obsid': obsid}
+        try:
+            params['band_serial'] = request_form['band-serial']
+        except:
+            print('No band_serial')
+
+        db.session.execute(sql, params)
+        db.session.commit()
+
+    except Exception as e:
+        print(f'Updating observation with id {obsid} failed:', e)
+
+
+def delete_image(obsid):
+    try:
+        sql = 'DELETE FROM images i \
+                WHERE i.observation_id=:obsid \
+                RETURNING id'
+        print('Deleted image with id', db.session.execute(
+            sql, {'obsid': obsid}).fetchone()[0])
+        db.session.commit()
+    except Exception as e:
+        print(f'Deleting image from observation {obsid} failed:', e)
+
+
 def get_birds():
     result = db.session.execute('SELECT fi FROM birds ORDER BY fi')
     birdpattern = ''
@@ -154,7 +194,7 @@ def get_observation(id):
             WHERE o.id=:id'
 
     result = db.session.execute(sql, params).fetchone()
-    observation = {'birdfi': result[0], 'birdsci': result[1], 'date': result[2].strftime('%-d.%-m.%Y'), 'muni': result[3],
+    observation = {'birdfi': result[0], 'birdsci': result[1], 'date': result[2], 'muni': result[3],
                    'prov': result[4], 'count': result[5], 'user': result[6], 'usernick': result[7], 'imgid': result[8],
                    'banded': result[9], 'band_serial': result[10], 'obsid': id}
 
