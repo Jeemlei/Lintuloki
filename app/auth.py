@@ -16,22 +16,55 @@ def make_session_permanent():
     app.permanent_session_lifetime = timedelta(minutes=15)
 
 
-def authorized_user(checkAdmin):
+def logged_in(checkAdmin):
+    admin = False
+    username = ''
     try:
         print('Checking login status...')
         user_id = session['user_id']
         username = session['username']
         if checkAdmin:
             print('Checking admin privileges...')
-            admin = db.session.execute('SELECT admin_status FROM users WHERE id=:id AND username=:username', {
-                                       'id': user_id, 'username': username}).fetchone()['admin_status']
-            if not admin:
-                abort(403)
-        print(username, 'authorized!')
-        return True
+            sql = 'SELECT admin_status \
+                    FROM users \
+                    WHERE id=:id \
+                        AND username=:username'
+            admin = db.session.execute(sql, {'id': user_id, 'username': username}).fetchone()['admin_status']
+        else:
+            print(username, 'authorized!')
+            return True
     except Exception as e:
         print('Authorization error:', e)
         return False
+
+    if not admin:
+        abort(403)
+    else:
+        print('Admin priviliges confirmed for', username)
+        return True
+
+
+def authorized(obsid):
+    username = ''
+    try:
+        print('Checking authorization...')
+        sql = 'SELECT u.id, u.username \
+                FROM observations o \
+                INNER JOIN users u ON u.id=o.user_id \
+                WHERE o.id=:obsid'
+        user = db.session.execute(sql, {'obsid': obsid}).fetchone()
+        username = user['username']
+
+        if not session['username'] == username or not session['user_id'] == user['id']:
+            abort(403)
+
+    except Exception as e:
+        print('Authorization error: User is not the owner of this log ::', e)
+        if not logged_in(True):
+            abort(403)
+
+    print(username, 'authorized!')
+    return True
 
 
 def new_user(name, username, password):
