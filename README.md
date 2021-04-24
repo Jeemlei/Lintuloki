@@ -36,4 +36,4 @@ Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraav
 - Kuvan lisääminen jälkikäteen havainnon yhteyteen
 - Havaintojen kommentointi
 
-Kaikki toiminnot ovat kohtuullisen yksiselitteisiä ja niihin pääsee käsiksi navigointipalkin linkeistä.
+Havaintojen tarkempiin tietoihin pääsee painamalla havainnon otsikkona olevaa linnun nimeä.
