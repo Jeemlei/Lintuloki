@@ -146,21 +146,6 @@
 				</button>
 			</form>
 		</div>
-		{% if comments %}
-		<div class="card-footer text-muted">Poista kommentteja:</div>
-		<ul class="list-group list-group-flush">
-			{% for comment in comments %}
-			<li class="list-group-item">
-				<p style="margin-top: 10px; margin-bottom: 0.5rem">
-					<b>{{ comment.user }}</b> kommentoi<br />{{ comment.posting_time }}
-				</p>
-				<p class="comment">{{ comment.content }}</p>
-			</li>
-			{% endfor %}
-		</ul>
-		{% else %}
-		<div class="card-footer text-muted">Ei kommentteja</div>
-		{% endif %}
 	</div>
 </div>
 
