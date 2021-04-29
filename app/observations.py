@@ -96,7 +96,7 @@ def update_observation(obsid, request_form):
         location_id = db.session.execute('SELECT id FROM locations WHERE muni=:location', {
                                          'location': request_form['location']}).fetchone()['id']
 
-        params = {'location_id': location_id, 'count': request_form['count'],
+        params = {'location_id': location_id, 'count': int(float(request_form['count'])),
                   'date': request_form['date'], 'band_serial': None, 'obsid': obsid}
         try:
             params['band_serial'] = request_form['band-serial']
