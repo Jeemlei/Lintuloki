@@ -110,13 +110,51 @@ def update_observation(obsid, request_form):
         print(f'Updating observation with id {obsid} failed:', e)
 
 
+def delete_observation(obsid):
+    delete_all_comments(obsid)
+    delete_image(obsid)
+
+    try:
+        sql = 'DELETE FROM observations o \
+                WHERE o.id=:id \
+                RETURNING id'
+        print('Deleted observation with id',
+              db.session.execute(sql, {'id': obsid}).fetchone()[0])
+        db.session.commit()
+    except Exception as e:
+        print(f'Deleting observation {obsid} failed:', e)
+
+
+def delete_comment(comment_id):
+    try:
+        sql = 'DELETE FROM comments c \
+            WHERE c.id=:id \
+            RETURNING id'
+        print('Deleted comment with id',
+              db.session.execute(sql, {'id': comment_id}).fetchone()[0])
+        db.session.commit()
+    except Exception as e:
+        print(f'Deleting comment {comment_id} failed:', e)
+
+
+def delete_all_comments(obsid):
+    try:
+        sql = 'DELETE FROM comments c \
+            WHERE c.observation_id=:obsid'
+        db.session.execute(sql, {'obsid': obsid})
+        db.session.commit()
+        print(f'Deleted comments from observation {obsid}')
+    except Exception as e:
+        print(f'Deleting comments from observation {obsid} failed:', e)
+
+
 def delete_image(obsid):
     try:
         sql = 'DELETE FROM images i \
                 WHERE i.observation_id=:obsid \
                 RETURNING id'
-        print('Deleted image with id', db.session.execute(
-            sql, {'obsid': obsid}).fetchone()[0])
+        print('Deleted image with id',
+              db.session.execute(sql, {'obsid': obsid}).fetchone()[0])
         db.session.commit()
     except Exception as e:
         print(f'Deleting image from observation {obsid} failed:', e)
