@@ -13,7 +13,9 @@
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item">
 				{% if observation.usernick == session.username %}
-				<a href="/edit/{{ observation.obsid }}"><button class="btn btn-success btn-sm">Muokkaa</button></a>
+				<a href="/edit/{{ observation.obsid }}">
+					<button class="btn btn-success btn-sm">Muokkaa</button>
+				</a>
 				{% endif %}
 				<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
 				<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
@@ -71,9 +73,30 @@
 		<ul class="list-group list-group-flush">
 			{% for comment in comments %}
 			<li class="list-group-item">
-				<p style="margin-top: 10px; margin-bottom: 0.5rem">
-					<b>{{ comment.user }}</b> kommentoi<br />{{ comment.posting_time }}
-				</p>
+				<div class="row">
+					<div class="col">
+						<p style="margin-top: 10px; margin-bottom: 0.5rem">
+							<b>{{ comment.user }}</b> kommentoi<br />{{ comment.posting_time
+							}}
+						</p>
+					</div>
+					{% if comment.user == session.username or observation.user_id ==
+					session.user_id or session.admin_status %}
+					<div class="col col-3">
+						<form method="POST" action="/comments/delete">
+							<input hidden name="obsid" value="{{ observation.obsid }}" />
+							<input hidden name="comment" value="{{ comment.id }}" />
+							<button
+								style="float: right; margin-top: 5px"
+								class="btn btn-danger btn-sm"
+								type="submit"
+							>
+								Poista
+							</button>
+						</form>
+					</div>
+					{% endif %}
+				</div>
 				<p class="comment">{{ comment.content }}</p>
 			</li>
 			{% endfor %}

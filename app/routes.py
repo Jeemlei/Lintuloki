@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, request, make_response
-from auth import logged_in, authorized, new_user, start_session, end_session
-from observations import create_observation, create_image, create_comment, update_observation, delete_image, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
+from auth import logged_in, authorized_obs, authorized_comment, new_user, start_session, end_session
+from observations import create_observation, create_image, create_comment, update_observation, delete_observation, delete_comment, delete_all_comments, delete_image, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
 from datetime import datetime
 
 
@@ -173,7 +173,7 @@ def comment(obsid):
 
 @app.route('/edit/<int:obsid>', methods=['GET', 'POST'])
 def edit(obsid):
-    if not authorized(obsid):
+    if not authorized_obs(obsid):
         return redirect('/login')
 
     if request.method == 'POST':
@@ -201,3 +201,17 @@ def edit(obsid):
     locations = get_locations()
 
     return render_template('edit.html', title='Lintuloki - Muokkaa', observation=observation, locationpattern=locations[1], locations=locations[0], comments=get_comments(obsid), today=datetime.now().strftime('%Y-%m-%d'))
+
+
+@app.route('/observations/delete', methods=['POST'])
+def delete_o():
+    print('JOU')
+    return redirect('/')
+
+
+@app.route('/comments/delete', methods=['POST'])
+def delete_c():
+    comment_id = request.form['comment']
+    if authorized_comment(comment_id):
+        delete_comment(comment_id)
+    return redirect(f'/observations/{request.form["obsid"]}')

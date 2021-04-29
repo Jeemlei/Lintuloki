@@ -29,7 +29,8 @@ def logged_in(checkAdmin):
                     FROM users \
                     WHERE id=:id \
                         AND username=:username'
-            admin = db.session.execute(sql, {'id': user_id, 'username': username}).fetchone()['admin_status']
+            admin = db.session.execute(
+                sql, {'id': user_id, 'username': username}).fetchone()['admin_status']
         else:
             print(username, 'authorized!')
             return True
@@ -44,7 +45,7 @@ def logged_in(checkAdmin):
         return True
 
 
-def authorized(obsid):
+def authorized_obs(obsid):
     username = ''
     try:
         print('Checking authorization...')
@@ -60,6 +61,30 @@ def authorized(obsid):
 
     except Exception as e:
         print('Authorization error: User is not the owner of this log ::', e)
+        if not logged_in(True):
+            abort(403)
+
+    print(username, 'authorized!')
+    return True
+
+
+def authorized_comment(comment_id):
+    username = ''
+    try:
+        print('Checking authorization...')
+        sql = 'SELECT u.id, u.username, o.user_id AS owner \
+                FROM comments c \
+                INNER JOIN users u ON u.id=c.user_id \
+                INNER JOIN observations o ON o.id=c.observation_id \
+                WHERE c.id=:id'
+        user_and_owner = db.session.execute(sql, {'id': comment_id}).fetchone()
+        username = user_and_owner['username']
+
+        if (not session['username'] == username or not session['user_id'] == user_and_owner['id']) and not session['user_id'] == user_and_owner['owner']:
+            abort(403)
+
+    except Exception as e:
+        print('Authorization error: User is not the owner of this comment ::', e)
         if not logged_in(True):
             abort(403)
 
@@ -87,13 +112,14 @@ def new_user(name, username, password):
 
 
 def start_session(username, password):
-    sql = 'SELECT id, psswrdhash FROM Users WHERE username=:username'
+    sql = 'SELECT id, psswrdhash, admin_status FROM Users WHERE username=:username'
     result = db.session.execute(sql, {'username': username})
     user = result.fetchone()
 
     if user and check_password_hash(user['psswrdhash'], password):
         session['user_id'] = user['id']
         session['username'] = username
+        session['admin_status'] = user['admin_status']
         return True
 
     return False
@@ -103,6 +129,7 @@ def end_session():
     try:
         del session['user_id']
         del session['username']
+        del session['admin_status']
     except Exception as e:
         print('Exception:', e)
         traceback.print_exc()

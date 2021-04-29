@@ -36,4 +36,9 @@ Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraav
 - Kuvan lisääminen jälkikäteen havainnon yhteyteen
 - Havaintojen kommentointi
 
+#### Lopullinen palautus:
+
+- Käyttäjä voi poistaa omia kommenttejaan
+- Käyttäjä voi poistaa kenen tahansa kommentteja omista havainnoistaan
+
 Havaintojen tarkempiin tietoihin pääsee painamalla havainnon otsikkona olevaa linnun nimeä.

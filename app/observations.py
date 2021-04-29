@@ -223,7 +223,7 @@ def get_observation(id):
     params = {'id': id}
 
     sql = 'SELECT b.fi, b.sci, o.observation_date AS date, l.muni, l.prov, \
-                    o.bird_count, u.realname, u.username, i.id, o.banded, o.band_serial \
+                    o.bird_count, u.realname, u.username, i.id, o.banded, o.band_serial, o.user_id \
             FROM observations o \
             INNER JOIN users u ON o.user_id=u.id \
             INNER JOIN locations l ON o.location_id=l.id \
@@ -234,7 +234,7 @@ def get_observation(id):
     result = db.session.execute(sql, params).fetchone()
     observation = {'birdfi': result[0], 'birdsci': result[1], 'date': result[2], 'muni': result[3],
                    'prov': result[4], 'count': result[5], 'user': result[6], 'usernick': result[7], 'imgid': result[8],
-                   'banded': result[9], 'band_serial': result[10], 'obsid': id}
+                   'banded': result[9], 'band_serial': result[10], 'user_id': result[11], 'obsid': id}
 
     return observation
 
@@ -245,7 +245,7 @@ def get_image(id):
 
 
 def get_comments(obsid):
-    sql = 'SELECT u.username, c.content, c.posting_time AS time \
+    sql = 'SELECT u.username, c.content, c.posting_time AS time, c.id \
             FROM comments c \
             INNER JOIN users u ON u.id=c.user_id \
             WHERE c.observation_id=:obsid \
@@ -255,6 +255,6 @@ def get_comments(obsid):
     comments = []
     for c in result:
         comments.append({'user': c[0], 'content': c[1], 'posting_time': c[2].strftime(
-            '%-d.%-m.%Y klo %-H.%M')})
+            '%-d.%-m.%Y klo %-H.%M'), 'id':c[3]})
 
     return comments
