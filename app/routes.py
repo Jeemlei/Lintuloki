@@ -205,8 +205,10 @@ def edit(obsid):
 
 @app.route('/observations/delete', methods=['POST'])
 def delete_o():
-    print('JOU')
-    return redirect('/')
+    obsid = request.form['obsid']
+    if authorized_obs(obsid):
+        delete_observation(obsid)
+    return redirect('/observations/page/1')
 
 
 @app.route('/comments/delete', methods=['POST'])

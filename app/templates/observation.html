@@ -13,9 +13,28 @@
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item">
 				{% if observation.usernick == session.username %}
-				<a href="/edit/{{ observation.obsid }}">
-					<button class="btn btn-success btn-sm">Muokkaa</button>
-				</a>
+				<div style="max-width: 320px" class="row">
+					<div style="padding: 5px; padding-left: 10px" class="col">
+						<a href="/edit/{{ observation.obsid }}">
+							<button class="btn btn-success btn-sm">Muokkaa havaintoa</button>
+						</a>
+					</div>
+					<div class="col">
+						<form method="POST" action="/observations/delete">
+							<input hidden name="obsid" value="{{ observation.obsid }}" />
+							<button class="btn btn-danger btn-sm" type="submit">
+								Poista havainto
+							</button>
+						</form>
+					</div>
+				</div>
+				{% elif session.admin_status %}
+				<form method="POST" action="/observations/delete">
+					<input hidden name="obsid" value="{{ observation.obsid }}" />
+					<button class="btn btn-danger btn-sm" type="submit">
+						Poista havainto
+					</button>
+				</form>
 				{% endif %}
 				<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
 				<p><b>Sijainti:</b> {{ observation.muni }}, {{ observation.prov }}</p>
@@ -41,7 +60,7 @@
 			>
 				<textarea
 					style="resize: none"
-					class="form-control"
+					class="form-control custom-input"
 					name="comment"
 					id="comment"
 					rows="3"
