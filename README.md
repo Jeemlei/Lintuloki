@@ -40,5 +40,6 @@ Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraav
 
 - Käyttäjä voi poistaa omia kommenttejaan
 - Käyttäjä voi poistaa kenen tahansa kommentteja omista havainnoistaan
+- Omien havaintojen poistaminen
 
 Havaintojen tarkempiin tietoihin pääsee painamalla havainnon otsikkona olevaa linnun nimeä.
