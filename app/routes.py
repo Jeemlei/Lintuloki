@@ -94,7 +94,8 @@ def image(id):
     response = make_response(bytes(image[0][0]))
     imagetype = image[0][1].rsplit('.', 1)[1].lower()
     response.headers.set('Content-Type', f'image/{imagetype}')
-    response.headers.set('Content-Disposition', f'inline; filename="{image[0][1]}"')
+    response.headers.set('Content-Disposition',
+                         f'inline; filename="{image[0][1]}"')
     return response
 
 
@@ -108,17 +109,17 @@ def resetSearch():
 
 @app.route('/observations/page/<int:page>', methods=['GET', 'POST'])
 def observations(page):
-    # -- POSSIBLE SEARCH VALUES --
-    # criterion	: string		("all"/"bird"/"location"/"band"/"observer")
-    # keyword	: string/None
-    # from		: string        (yyyy-mm-dd)
-    # to		: string        (yyyy-mm-dd)
     criterion = 'all'
     keyword = ''
     start_date = '2021-01-01'
     end_date = datetime.now().strftime('%Y-%m-%d')
 
-    try:
+    if request.method == 'POST':
+        # -- POSSIBLE SEARCH VALUES --
+        # criterion	: string		("all"/"bird"/"location"/"band"/"observer")
+        # keyword	: string/None
+        # from		: string        (yyyy-mm-dd)
+        # to		: string        (yyyy-mm-dd)
         criterion = request.form['criterion']
         try:
             keyword = request.form['keyword']
@@ -126,14 +127,20 @@ def observations(page):
             print('No keyword')
         start_date = request.form['from']
         end_date = request.form['to']
-    except:
-        searchCookie = request.cookies.get('search')
-        if searchCookie:
-            searchCookie = searchCookie.split(';')
-            criterion = searchCookie[0]
-            keyword = searchCookie[1]
-            start_date = searchCookie[2]
-            end_date = searchCookie[3]
+
+        resp = make_response(redirect('/observations/page/1'))
+        resp.set_cookie(
+            'search', f'{criterion};{keyword};{start_date};{end_date}')
+        return resp
+
+    # ----- GET /observations/page/<int:page> -----
+    searchCookie = request.cookies.get('search')
+    if searchCookie:
+        searchCookie = searchCookie.split(';')
+        criterion = searchCookie[0]
+        keyword = searchCookie[1]
+        start_date = searchCookie[2]
+        end_date = searchCookie[3]
 
     pagesize = 5
     observations = get_observations(
