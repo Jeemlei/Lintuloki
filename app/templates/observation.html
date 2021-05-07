@@ -34,6 +34,11 @@
 					<button class="btn btn-danger btn-sm" type="submit">
 						Poista havainto
 					</button>
+					<input
+						type="hidden"
+						name="csrf_token"
+						value="{{ session.csrf_token }}"
+					/>
 				</form>
 				{% endif %}
 				<p><b>Havaintopäivä:</b> {{ observation.date }}</p>
@@ -71,6 +76,11 @@
 				<button style="margin-top: 5px" class="btn btn-success" type="submit">
 					Kommentoi
 				</button>
+				<input
+					type="hidden"
+					name="csrf_token"
+					value="{{ session.csrf_token }}"
+				/>
 			</form>
 			{% else %}
 			<!--Dummy form-->
@@ -112,6 +122,11 @@
 							>
 								Poista
 							</button>
+							<input
+								type="hidden"
+								name="csrf_token"
+								value="{{ session.csrf_token }}"
+							/>
 						</form>
 					</div>
 					{% endif %}

@@ -15,7 +15,11 @@
 				band-serial 	: text/empty
 				uploadImage 	: file/empty 	(.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
 			-->
-			<form method="post" enctype="multipart/form-data" action="/new-observation">
+			<form
+				method="post"
+				enctype="multipart/form-data"
+				action="/new-observation"
+			>
 				<div class="row">
 					<div class="col form-floating mb-3">
 						<input
@@ -211,7 +215,9 @@
 							id="band-serial"
 							disabled
 						/>
-						<label for="band-serial">Renkaan kirjainkoodi ja sarjanumero:</label>
+						<label for="band-serial">
+							Renkaan kirjainkoodi ja sarjanumero:
+						</label>
 					</div>
 				</div>
 
@@ -237,6 +243,12 @@
 						<button class="btn btn-success" type="submit">Lähetä</button>
 					</div>
 				</div>
+
+				<input
+					type="hidden"
+					name="csrf_token"
+					value="{{ session.csrf_token }}"
+				/>
 			</form>
 		</div>
 	</div>

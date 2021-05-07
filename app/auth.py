@@ -5,6 +5,7 @@ from datetime import timedelta
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
 import traceback
+import secrets
 
 
 app.secret_key = getenv("SECRET_KEY")
@@ -120,6 +121,7 @@ def start_session(username, password):
         session['user_id'] = user['id']
         session['username'] = username
         session['admin_status'] = user['admin_status']
+        session["csrf_token"] = secrets.token_hex(16)
         return True
 
     return False
@@ -130,6 +132,12 @@ def end_session():
         del session['user_id']
         del session['username']
         del session['admin_status']
+        del session['csrf_token']
     except Exception as e:
         print('Exception:', e)
         traceback.print_exc()
+
+
+def check_csfr(token):
+    if session["csrf_token"] != token:
+        abort(403)

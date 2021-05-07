@@ -101,8 +101,8 @@
 				</div>
 				<div class="form-group row">
 					{% if observation.count == 1 %}
-                    <input type="hidden" name="count" id="count" value="1" />
-                        {% if observation.banded == 'true' %}
+					<input type="hidden" name="count" id="count" value="1" />
+						{% if observation.banded == 'true' %}
 					<label for="location" class="col-sm-3 col-form-label">
 						<b>Rengasnumero:</b>
 					</label>
@@ -117,7 +117,7 @@
 							required
 						/>
 					</div>
-                        {% endif %}
+						{% endif %}
 					{% else %}
 					<label for="location" class="col-sm-3 col-form-label">
 						<b>Lintujen lukumäärä:</b>
@@ -144,6 +144,11 @@
 				>
 					Tallenna
 				</button>
+				<input
+					type="hidden"
+					name="csrf_token"
+					value="{{ session.csrf_token }}"
+				/>
 			</form>
 		</div>
 	</div>

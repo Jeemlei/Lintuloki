@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, request, make_response
-from auth import logged_in, authorized_obs, authorized_comment, new_user, start_session, end_session
+from auth import logged_in, authorized_obs, authorized_comment, new_user, start_session, end_session, check_csfr
 from observations import create_observation, create_image, create_comment, update_observation, delete_observation, delete_comment, delete_all_comments, delete_image, get_birds, get_locations, get_observations, get_observation, get_image, get_comments
 from datetime import datetime
 
@@ -69,6 +69,8 @@ def new_observation():
         # banded-option : string        ('true'/'false'/'not_known')
         # band-serial   : string/None
         # uploadImage   : file/None     (.apng/.avif/.gif/.jpg/.jpeg/.jfif/.pjpeg/.pjp/.png/.svg/.webp)
+        check_csfr(request.form["csrf_token"])
+
         observation_id = create_observation(request.form)
 
         if not observation_id:
@@ -172,6 +174,8 @@ def comment(obsid):
     if not logged_in(False):
         return redirect('/login')
 
+    check_csfr(request.form["csrf_token"])
+
     # -- REQUEST VALUES --
     # comment : string
     create_comment(obsid, request.form['comment'])
@@ -191,6 +195,8 @@ def edit(obsid):
         # location 	    : text
         # count         : number        (1-1000)
         # (band-serial  : text)
+        check_csfr(request.form["csrf_token"])
+
         if request.form['deleteImg'] == 'true':
             delete_image(obsid)
 
@@ -212,6 +218,7 @@ def edit(obsid):
 
 @app.route('/observations/delete', methods=['POST'])
 def delete_o():
+    check_csfr(request.form["csrf_token"])
     obsid = request.form['obsid']
     if authorized_obs(obsid):
         delete_observation(obsid)
@@ -220,6 +227,7 @@ def delete_o():
 
 @app.route('/comments/delete', methods=['POST'])
 def delete_c():
+    check_csfr(request.form["csrf_token"])
     comment_id = request.form['comment']
     if authorized_comment(comment_id):
         delete_comment(comment_id)
