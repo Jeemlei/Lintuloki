@@ -74,7 +74,7 @@ def create_comment(obsid, content):
             VALUES (:obsid, :user_id, :content)'
     try:
         db.session.execute(
-            sql, {'obsid': obsid, 'user_id': session['user_id'], 'content': content})
+            sql, {'obsid': obsid, 'user_id': session['user_id'], 'content': content[:256]})
         db.session.commit()
 
     except Exception as e:
