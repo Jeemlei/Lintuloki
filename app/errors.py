@@ -3,11 +3,11 @@ from flask import render_template
 
 
 def bad_request(e):
-    return render_template('error.html', title='ERROR404', header='400 BAD REQUEST', description='Pyynnössäsi oli jotain vikana...')
+    return render_template('error.html', title='ERROR400', header='400 BAD REQUEST', description='Pyynnössäsi oli jotain vikana...')
 
 
 def forbidden(e):
-    return render_template('error.html', title='ERROR404', header='403 FORBIDDEN', description='Sinulla ei ole oikeutta pyytämääsi toimintoon...')
+    return render_template('error.html', title='ERROR403', header='403 FORBIDDEN', description='Sinulla ei ole oikeutta pyytämääsi toimintoon...')
 
 
 def not_found(e):
@@ -15,11 +15,11 @@ def not_found(e):
 
 
 def unsupported_media_type(e):
-    return render_template('error.html', title='ERROR404', header='415 UNSUPPORTED MEDIA TYPE', description='Lähettämääsi mediatyyppiä ei tueta...')
+    return render_template('error.html', title='ERROR415', header='415 UNSUPPORTED MEDIA TYPE', description='Lähettämääsi mediatyyppiä ei tueta...')
 
 
 def internal_server_error(e):
-    return render_template('error.html', title='ERROR404', header='500 INTERNAL SERVER ERROR', description='Serverillä meni jotain pieleen...')
+    return render_template('error.html', title='ERROR500', header='500 INTERNAL SERVER ERROR', description='Serverillä meni jotain pieleen...')
 
 
 app.register_error_handler(400, bad_request)
