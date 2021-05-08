@@ -38,7 +38,7 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 #### Ylläpitäjä voi lisäksi
 
 - poistaa kaikkien käyttäjien havaintoja
-- muokata kaikkien käyttäjien havaintoja (ei linkkiä käyttöliittymässä /edit/<id>)
+- muokata kaikkien käyttäjien havaintoja (ei linkkiä käyttöliittymässä -> /edit/[id])
 - poistaa kaikkien käyttäjien kommentteja
 
 #### Tietokanta
