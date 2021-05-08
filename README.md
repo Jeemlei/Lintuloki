@@ -33,7 +33,7 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 - poistaa kuvan omasta havainnostaan
 - poistaa omia havaintojaan
 - kommentoida kaikkia havaintoja
-- poistaa omia kommenttejaan sekä muiden kommentteja omista havainnoitaan
+- poistaa omia kommenttejaan sekä muiden kommentteja omista havainnoistaan
 
 #### Ylläpitäjä voi lisäksi
 
