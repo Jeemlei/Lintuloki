@@ -13,33 +13,36 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 
 **Linkki herokuun**: [Lintuloki](https://lintuloki.herokuapp.com/)
 
-Sovelluksen tämän hetkinen versio on herokussa ja siihen on toteutettu seuraavat [vaatimusmäärittelyssä](/documentation/requirements.md) kirjatut ominaisuudet:
+### Lopullinen palautus:
 
-#### Välipalautus 2:
-
-- Uuden käyttäjän rekisteröiminen
-- Sisään kirjautuminen
-- Ulos kirjautuminen
-- Uusien havaintojen luominen
-- Kuvan lisääminen havainnon yhteyteen
-- Havaintojen tarkastelu
-- Havaintojen hakeminen tietyltä aikaväliltä eri kriteereillä
+- Sovellukseen voi rekisteröidä käyttäjän sekä kirjautua sisään ja ulos
+- Havaintoja voi tarkastella kirjautumatta sisään
+- Havaintoja voi hakea tietyltä aikaväliltä eri kriteereillä
   - Linnun laji
-  - Havintopaikka (kunta tai maakunta)
+  - Havaintopaikka (kunta tai maakunta)
   - Linnun renkaan kirjainkoodi ja sarjanumero
   - Havainnon tehnyt bongari (nimi tai käyttäjätunnus)
+- Havaintojen tarkempiin tietoihin pääsee painamalla havainnon otsikkona olevaa linnun nimeä.
+- Käyttäjä kirjataan ulos 15 minuutin epäakttivisuuden jälkeen
 
-#### Välipalautus 3:
+#### Normaali käyttäjä voi
 
-- Omien havaintojen muokkaaminen
-- Kuvan poistaminen
-- Kuvan lisääminen jälkikäteen havainnon yhteyteen
-- Havaintojen kommentointi
+- luoda uusia havaintoja
+- muokata omia havaintojaan
+- lisätä havainnon yhteyteen kuvan luodessaan tai muokatessaan havaintoa
+- poistaa kuvan omasta havainnostaan
+- poistaa omia havaintojaan
+- kommentoida kaikkia havaintoja
+- poistaa omia kommenttejaan sekä muiden kommentteja omista havainnoitaan
 
-#### Lopullinen palautus:
+#### Ylläpitäjä voi lisäksi
 
-- Käyttäjä voi poistaa omia kommenttejaan
-- Käyttäjä voi poistaa kenen tahansa kommentteja omista havainnoistaan
-- Omien havaintojen poistaminen
+- poistaa kaikkien käyttäjien havaintoja
+- muokata kaikkien käyttäjien havaintoja (ei linkkiä käyttöliittymässä /edit/<id>)
+- poistaa kaikkien käyttäjien kommentteja
 
-Havaintojen tarkempiin tietoihin pääsee painamalla havainnon otsikkona olevaa linnun nimeä.
+#### Tietokanta
+
+Käyttöön otettaessa tietokanta on alustettu tiedostolla [init.sql](/documentation/db/init.sql).
+
+![dbdiagram.png](/documentation/db/dbdiagram.png)
