@@ -41,6 +41,8 @@ Sovellus tarjoaa alustan lintuhavaintojen kirjaamiseen sekä aiempien havaintoje
 - muokata kaikkien käyttäjien havaintoja (ei linkkiä käyttöliittymässä -> /edit/[id])
 - poistaa kaikkien käyttäjien kommentteja
 
+(Ylläpitäjän tunnukset testaukseen telegrammista _@Jeemlei_)
+
 #### Tietokanta
 
 Käyttöön otettaessa tietokanta on alustettu tiedostolla [init.sql](/documentation/db/init.sql).
